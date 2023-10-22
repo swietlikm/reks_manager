@@ -56,6 +56,10 @@ class Adopter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Creation date"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Update date"))
 
+    class Meta:
+        verbose_name = _("Adopter")
+        verbose_name_plural = _("Adopters")
+
 
 class TemporaryHome(models.Model):
     id = models.UUIDField(primary_key=True, default=shortuuid.uuid, unique=True)
@@ -81,6 +85,10 @@ class TemporaryHome(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Creation date"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Update date"))
+
+    class Meta:
+        verbose_name = _("Temporary home")
+        verbose_name_plural = _("Temporary homes")
 
 
 class Animal(models.Model):
@@ -120,6 +128,10 @@ class Animal(models.Model):
         if self.date_when_found < self.birth_date:
             raise ValidationError(_("Date when found cannot be before the birth date."))
 
+    class Meta:
+        verbose_name = _("Animal")
+        verbose_name_plural = _("Animals")
+
 
 class HealthCard(models.Model):
     id = models.UUIDField(primary_key=True, default=shortuuid.uuid, unique=True)
@@ -135,6 +147,10 @@ class HealthCard(models.Model):
     def __str__(self):
         return f"Health Card of {self.animal.name}"
 
+    class Meta:
+        verbose_name = _("Health card")
+        verbose_name_plural = _("Health cards")
+
 
 class VeterinaryVisit(models.Model):
     health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, related_name="veterinaryvisits")
@@ -144,3 +160,7 @@ class VeterinaryVisit(models.Model):
 
     def __str__(self):
         return f"Visit for {self.health_card.animal.name} by {self.doctor}"
+
+    class Meta:
+        verbose_name = _("Veterinary visit")
+        verbose_name_plural = _("Veterinary visits")

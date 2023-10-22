@@ -3,7 +3,7 @@ from django.db.models import CharField, EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from reks_manager.users.managers import UserManager
+from reks_manager.users.managers import UserManager # noqa
 
 
 class User(AbstractUser):
@@ -12,8 +12,10 @@ class User(AbstractUser):
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
-    # First and last name do not cover name patterns around the globe
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
