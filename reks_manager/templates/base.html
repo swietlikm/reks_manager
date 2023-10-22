@@ -54,19 +54,18 @@
                   aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'home' %}">reks_manager</a>
+          <a class="navbar-brand" href="{% url 'home' %}">Reks Manager</a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">About</a>
-              </li>
               {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>
-                </li>
+                {% if request.user.is_staff %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admin:index' %}">{% translate "Admin" %}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'api-docs' %}">{% translate "Api-docs" %}</a>
+                  </li>
+                {% endif %}
                 <li class="nav-item">
                   {# URL provided by django-allauth/account/urls.py #}
                   <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
@@ -101,7 +100,7 @@
         {% endfor %}
       {% endif %}
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <p>Hello!</p>
       {% endblock content %}
     </div>
     <!-- /container -->
