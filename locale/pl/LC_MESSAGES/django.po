@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-22 21:26+0200\n"
+"POT-Creation-Date: 2023-10-23 22:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,144 +16,244 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
 #: .\config\settings\base.py:32
 msgid "English"
-msgstr ""
+msgstr "Angielski"
 
 #: .\config\settings\base.py:33
 msgid "Polish"
-msgstr ""
+msgstr "Polski"
 
 #: .\reks_manager\core\apps.py:7
 msgid "Core"
-msgstr ""
+msgstr "Główne"
 
-#: .\reks_manager\core\models.py:47 .\reks_manager\core\models.py:67
+#: .\reks_manager\core\models.py:12
+msgid "For Adoption"
+msgstr "Do adopcji"
+
+#: .\reks_manager\core\models.py:13
+msgid "Adopted"
+msgstr "Zaadoptowany"
+
+#: .\reks_manager\core\models.py:14
+msgid "Quarantine"
+msgstr "Na kwarantannie"
+
+#: .\reks_manager\core\models.py:15
+msgid "Unadoptable"
+msgstr "Nieadoptowalny"
+
+#: .\reks_manager\core\models.py:19
+msgid "Male"
+msgstr "Samiec"
+
+#: .\reks_manager\core\models.py:20
+msgid "Female"
+msgstr "Suczka"
+
+#: .\reks_manager\core\models.py:24
+msgid "Dog"
+msgstr "Pies"
+
+#: .\reks_manager\core\models.py:25
+msgid "Cat"
+msgstr "Kot"
+
+#: .\reks_manager\core\models.py:29
+msgid "Base"
+msgstr "Schronisko"
+
+#: .\reks_manager\core\models.py:30 .\reks_manager\core\models.py:108
+msgid "Temporary home"
+msgstr "Dom tymczasowy"
+
+#: .\reks_manager\core\models.py:34
+msgid "Food"
+msgstr "Pokarm"
+
+#: .\reks_manager\core\models.py:35
+msgid "Contact"
+msgstr "Kontakt"
+
+#: .\reks_manager\core\models.py:36
+msgid "Inhalation"
+msgstr "Inhalacja"
+
+#: .\reks_manager\core\models.py:54 .\reks_manager\core\models.py:82
 msgid "Full name of owner"
-msgstr ""
+msgstr "Imie i nazwisko właściciela"
 
-#: .\reks_manager\core\models.py:51 .\reks_manager\core\models.py:71
+#: .\reks_manager\core\models.py:58 .\reks_manager\core\models.py:86
 msgid "Phone number must have 9 digits."
-msgstr ""
+msgstr "Numer telefonu musi się składać z 9 cyfr"
 
-#: .\reks_manager\core\models.py:52 .\reks_manager\core\models.py:72
-#: .\reks_manager\core\models.py:83
+#: .\reks_manager\core\models.py:59 .\reks_manager\core\models.py:87
 msgid "Phone number"
-msgstr ""
-
-#: .\reks_manager\core\models.py:54
-msgid "Address"
-msgstr ""
-
-#: .\reks_manager\core\models.py:56 .\reks_manager\core\models.py:86
-#: .\reks_manager\core\models.py:117 .\reks_manager\core\models.py:144
-msgid "Creation date"
-msgstr ""
-
-#: .\reks_manager\core\models.py:57 .\reks_manager\core\models.py:87
-#: .\reks_manager\core\models.py:118 .\reks_manager\core\models.py:145
-msgid "Update date"
-msgstr ""
-
-#: .\reks_manager\core\models.py:60
-msgid "Adopter"
-msgstr ""
+msgstr "Numer telefonu"
 
 #: .\reks_manager\core\models.py:61
+msgid "Address"
+msgstr "Adres"
+
+#: .\reks_manager\core\models.py:63 .\reks_manager\core\models.py:141
+#: .\reks_manager\core\models.py:184 .\reks_manager\core\models.py:200
+msgid "Created at"
+msgstr "Utworzono"
+
+#: .\reks_manager\core\models.py:64 .\reks_manager\core\models.py:142
+#: .\reks_manager\core\models.py:185 .\reks_manager\core\models.py:201
+msgid "Updated at"
+msgstr "Zaktualizowano"
+
+#: .\reks_manager\core\models.py:70
+msgid "Adopter"
+msgstr "Adoptujący"
+
+#: .\reks_manager\core\models.py:71
 msgid "Adopters"
-msgstr ""
-
-#: .\reks_manager\core\models.py:75
-msgid "City"
-msgstr ""
-
-#: .\reks_manager\core\models.py:76
-msgid "Street"
-msgstr ""
-
-#: .\reks_manager\core\models.py:77
-msgid "Building number"
-msgstr ""
-
-#: .\reks_manager\core\models.py:78
-msgid "Apartment number"
-msgstr ""
-
-#: .\reks_manager\core\models.py:82
-msgid "Zip code must have 5 digits."
-msgstr ""
+msgstr "Adoptujący"
 
 #: .\reks_manager\core\models.py:90
-msgid "Temporary home"
-msgstr ""
+msgid "City"
+msgstr "Miasto"
 
 #: .\reks_manager\core\models.py:91
-msgid "Temporary homes"
-msgstr ""
+msgid "Street"
+msgstr "Ulica"
+
+#: .\reks_manager\core\models.py:92
+msgid "Building number"
+msgstr "Numer budynku"
+
+#: .\reks_manager\core\models.py:93
+msgid "Apartment number"
+msgstr "Numer mieszkania"
+
+#: .\reks_manager\core\models.py:97
+msgid "Zip code must have 5 digits."
+msgstr "Kod pocztowy musi mieć 5 znaków"
 
 #: .\reks_manager\core\models.py:98
-msgid "Name must be at least 2 characters long."
-msgstr ""
+msgid "Zip code"
+msgstr "Kod pocztowy"
+
+#: .\reks_manager\core\models.py:101
+msgid "Creation date"
+msgstr "Data utworzenia"
 
 #: .\reks_manager\core\models.py:102
+msgid "Update date"
+msgstr "Data aktualizacji"
+
+#: .\reks_manager\core\models.py:109
+msgid "Temporary homes"
+msgstr "Domy tymczasowe"
+
+#: .\reks_manager\core\models.py:121
+msgid "Name must be at least 2 characters long."
+msgstr "Imie musi się składać z minimum 2 znaków"
+
+#: .\reks_manager\core\models.py:122
+msgid "Name"
+msgstr "Imię"
+
+#: .\reks_manager\core\models.py:126
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
-#: .\reks_manager\core\models.py:103
+#: .\reks_manager\core\models.py:127
 msgid "Gender"
-msgstr ""
-
-#: .\reks_manager\core\models.py:107
-msgid "Status"
-msgstr ""
+msgstr "Płeć"
 
 #: .\reks_manager\core\models.py:129
-msgid "Date when found cannot be before the birth date."
-msgstr ""
+msgid "Birth date"
+msgstr "Data urodzenia"
 
-#: .\reks_manager\core\models.py:132
-msgid "Animal"
-msgstr ""
+#: .\reks_manager\core\models.py:130
+msgid "Description"
+msgstr "Opis"
+
+#: .\reks_manager\core\models.py:131
+msgid "Status"
+msgstr "Status"
 
 #: .\reks_manager\core\models.py:133
+msgid "Location where found"
+msgstr "Miejsce znalezienia"
+
+#: .\reks_manager\core\models.py:134
+msgid "Date when found"
+msgstr "Data znalezienia"
+
+#: .\reks_manager\core\models.py:136
+msgid "Residence"
+msgstr "Miejsce przebywania"
+
+#: .\reks_manager\core\models.py:137
+msgid "Health description"
+msgstr "Opis zdrowia"
+
+#: .\reks_manager\core\models.py:139
+msgid "Photo"
+msgstr "Zdjęcie"
+
+#: .\reks_manager\core\models.py:148 .\reks_manager\users\models.py:16
+msgid "User"
+msgstr "Użytkownik"
+
+#: .\reks_manager\core\models.py:156
+msgid "Home"
+msgstr "Dom"
+
+#: .\reks_manager\core\models.py:164
+msgid "Date when found cannot be before the birth date."
+msgstr "Data znalezienia nie może być przed datą urodzenia"
+
+#: .\reks_manager\core\models.py:167
+msgid "Animal"
+msgstr "Zwierze"
+
+#: .\reks_manager\core\models.py:168
 msgid "Animals"
-msgstr ""
+msgstr "Zwierzęta"
 
-#: .\reks_manager\core\models.py:151
+#: .\reks_manager\core\models.py:191
 msgid "Health card"
-msgstr ""
+msgstr "Karta zdrowia"
 
-#: .\reks_manager\core\models.py:152
+#: .\reks_manager\core\models.py:192
 msgid "Health cards"
-msgstr ""
+msgstr "Karty zdrowia"
 
-#: .\reks_manager\core\models.py:157
+#: .\reks_manager\core\models.py:197
 msgid "Doctor"
-msgstr ""
+msgstr "Lekarz"
 
-#: .\reks_manager\core\models.py:158
+#: .\reks_manager\core\models.py:198
 msgid "Date of visit"
-msgstr ""
+msgstr "Data wizyty"
 
-#: .\reks_manager\core\models.py:159
+#: .\reks_manager\core\models.py:199
 msgid "Visit description"
-msgstr ""
+msgstr "Opis wizyty"
 
-#: .\reks_manager\core\models.py:165
+#: .\reks_manager\core\models.py:207
 msgid "Veterinary visit"
-msgstr ""
+msgstr "Wizyta weterynaryjna"
 
-#: .\reks_manager\core\models.py:166
+#: .\reks_manager\core\models.py:208
 msgid "Veterinary visits"
-msgstr ""
+msgstr "Wizyty weterynaryjne"
 
 #: .\reks_manager\templates\account\account_inactive.html:6
 #: .\reks_manager\templates\account\account_inactive.html:9
 msgid "Account Inactive"
-msgstr ""
+msgstr "Konto nieaktywne"
 
 #: .\reks_manager\templates\account\account_inactive.html:10
 msgid "This account is inactive."
@@ -161,11 +261,11 @@ msgstr ""
 
 #: .\reks_manager\templates\account\email.html:7
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #: .\reks_manager\templates\account\email.html:10
 msgid "E-mail Addresses"
-msgstr ""
+msgstr "Adres e-mail"
 
 #: .\reks_manager\templates\account\email.html:12
 msgid "The following e-mail addresses are associated with your account:"
@@ -173,11 +273,11 @@ msgstr ""
 
 #: .\reks_manager\templates\account\email.html:27
 msgid "Verified"
-msgstr ""
+msgstr "Zweryfikowany"
 
 #: .\reks_manager\templates\account\email.html:29
 msgid "Unverified"
-msgstr ""
+msgstr "Niezweryfikowany"
 
 #: .\reks_manager\templates\account\email.html:32
 msgid "Primary"
@@ -193,11 +293,11 @@ msgstr ""
 
 #: .\reks_manager\templates\account\email.html:46
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: .\reks_manager\templates\account\email.html:52
 msgid "Warning:"
-msgstr ""
+msgstr "Ostrzeżenie:"
 
 #: .\reks_manager\templates\account\email.html:52
 msgid ""
@@ -231,7 +331,7 @@ msgstr ""
 
 #: .\reks_manager\templates\account\email_confirm.html:19
 msgid "Confirm"
-msgstr ""
+msgstr "Zatwierdź"
 
 #: .\reks_manager\templates\account\email_confirm.html:24
 #, python-format
@@ -267,8 +367,9 @@ msgstr ""
 msgid ""
 "If you have not created an account yet, then please <a href=\"%(signup_url)s"
 "\">sign up</a> first."
-msgstr "Jeżeli nie masz jeszcze konta, proszę <a href=\"%(signup_url)s"
-"\">zarejestruj się</a>."
+msgstr ""
+"Jeżeli nie masz jeszcze konta, proszę <a href=\"%(signup_url)s\">zarejestruj "
+"się</a>."
 
 #: .\reks_manager\templates\account\login.html:49
 msgid "Forgot Password?"
@@ -411,7 +512,7 @@ msgstr ""
 
 #: .\reks_manager\templates\base.html:63
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: .\reks_manager\templates\base.html:66
 msgid "Api-docs"
@@ -436,10 +537,6 @@ msgstr "Użytkownicy"
 #: .\reks_manager\users\forms.py:28 .\reks_manager\users\tests\test_forms.py:36
 msgid "This email has already been taken."
 msgstr ""
-
-#: .\reks_manager\users\models.py:16
-msgid "User"
-msgstr "Użytkownik"
 
 #: .\reks_manager\users\models.py:19
 msgid "Name of User"
