@@ -58,6 +58,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_AUTOREFRESH = True
 WHITENOISE_USE_FINDERS = True
 # MEDIA
