@@ -54,7 +54,7 @@ msgstr "Samiec"
 
 #: .\reks_manager\core\models.py:20
 msgid "Female"
-msgstr "Suczka"
+msgstr "Samica"
 
 #: .\reks_manager\core\models.py:24
 msgid "Dog"

@@ -64,7 +64,7 @@ class Adopter(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return f'Adopter {self.owner}'
+        return f'{_(Adopter)} {self.owner}'
 
     class Meta:
         verbose_name = _("Adopter")
@@ -156,7 +156,7 @@ class Animal(models.Model):
         verbose_name=_('Home'))
 
     def __str__(self):
-        return f"{self.animal_type} {self.name}"
+        return f"{_(self.animal_type)} {self.name}"
 
     def clean(self):
         super().clean()

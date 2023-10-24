@@ -27,7 +27,7 @@ class AnimalAdmin(admin.ModelAdmin):
 
 
 @admin.register(TemporaryHome)
-class AnimalAdmin(admin.ModelAdmin):
+class TemporaryHomeAdmin(admin.ModelAdmin):
     list_display = (
         'owner',
         'phone_number',
@@ -40,5 +40,28 @@ class AnimalAdmin(admin.ModelAdmin):
     search_fields = ('owner',)
     readonly_fields = ('id',)
 
-admin.site.register(HealthCard)
-admin.site.register(VeterinaryVisit)
+
+@admin.register(HealthCard)
+class HealthCardAdmin(admin.ModelAdmin):
+    list_display = (
+        'animal',
+        'created_at',
+        'updated_at',
+    )
+    list_filter = ('animal', 'created_at', 'updated_at')
+    search_fields = ('animal',)
+    readonly_fields = ('id',)
+
+
+@admin.register(VeterinaryVisit)
+class VeterinaryVisitAdmin(admin.ModelAdmin):
+    list_display = (
+        'health_card',
+        'doctor',
+        'date',
+        'created_at',
+        'updated_at',
+    )
+    list_filter = ('health_card', 'doctor', 'date', 'created_at', 'updated_at')
+    search_fields = ('health_card.animal.name', 'doctor')
+    readonly_fields = ('id',)
