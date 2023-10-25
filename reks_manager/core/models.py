@@ -43,6 +43,49 @@ DOCTOR_CHOICES = [
 ]
 
 
+class Allergy(models.Model):
+    category = models.CharField(max_length=255, choices=ALLERGY_CATEGORY, verbose_name=_('Allergy category'))
+    name = models.CharField(max_length=255, verbose_name=_("Allergy name"))
+    description = models.TextField(blank=True, verbose_name=_("Description"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    def __str__(self):
+        return _('Allergy') + f': {self.category} {self.name}'
+
+    class Meta:
+        verbose_name = _("Allergy")
+        verbose_name_plural = _("Allergies")
+
+
+class Medication(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_("Medication name"))
+    description = models.TextField(blank=True, verbose_name=_("Description"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    def __str__(self):
+        return _('Medication') + f': {self.name}'
+
+    class Meta:
+        verbose_name = _("Medication")
+        verbose_name_plural = _("Medications")
+
+
+class Vaccination(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_("Vaccination name"))
+    description = models.TextField(blank=True, verbose_name=_("Description"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
+
+    def __str__(self):
+        return _('Vaccination') + f': {self.name}'
+
+    class Meta:
+        verbose_name = _("Vaccination")
+        verbose_name_plural = _("Vaccinations")
+
+
 class Adopter(models.Model):
     id = ShortUUIDField(
         primary_key=True,
@@ -64,7 +107,7 @@ class Adopter(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return f'{_(Adopter)} {self.owner}'
+        return f'{_("Adopter")} {self.owner}'
 
     class Meta:
         verbose_name = _("Adopter")
@@ -175,11 +218,11 @@ class HealthCard(models.Model):
         max_length=40,
         alphabet="abcdefg1234",
     )
-    animal = models.OneToOneField(Animal, on_delete=models.CASCADE, related_name="healthcards")
+    animal = models.OneToOneField(Animal, on_delete=models.CASCADE, related_name="healthcards", verbose_name=_('Animal'))
 
-    allergies = models.JSONField()
-    drugs = models.JSONField()
-    vaccinations = models.JSONField()
+    allergies = models.ManyToManyField(Allergy, through='HealthCardAllergy', blank=True, verbose_name=_("Allergies"))
+    drugs = models.ManyToManyField(Medication, through='HealthCardMedication', blank=True, verbose_name=_("Medications"))
+    vaccinations = models.ManyToManyField(Vaccination, through='HealthCardVaccination', blank=True, verbose_name=_("Vaccinations"))
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -206,3 +249,49 @@ class VeterinaryVisit(models.Model):
     class Meta:
         verbose_name = _("Veterinary visit")
         verbose_name_plural = _("Veterinary visits")
+
+
+class HealthCardAllergy(models.Model):
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
+    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, verbose_name=_('Allergy'))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.health_card} - Allergy: {self.allergy}"
+
+    class Meta:
+        verbose_name = _("Health card - Allergy")
+        verbose_name_plural = _("Health card - Allergies")
+
+
+class HealthCardMedication(models.Model):
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
+    medication = models.ForeignKey(Medication, on_delete=models.CASCADE, verbose_name=_('Medication'))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.health_card} - Medication: {self.medication}"
+
+    class Meta:
+        verbose_name = _("Health card - Medication")
+        verbose_name_plural = _("Health card - Medications")
+
+
+class HealthCardVaccination(models.Model):
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
+    vaccination = models.ForeignKey(Vaccination, on_delete=models.CASCADE, verbose_name=_('Vaccination'))
+    vaccination_date = models.DateField(verbose_name=_('Vaccination date'))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.health_card} - Vaccination: {self.vaccination}"
+
+    class Meta:
+        verbose_name = _("Health card - Vaccination")
+        verbose_name_plural = _("Health card - Vaccinations")
