@@ -25,9 +25,7 @@ TYPE_CHOICES = [
     ("CAT", _("Cat")),
 ]
 
-RESIDENCE_CHOICES = [
-    ("BASE", _("Base")),
-    ("TEMPORARY_HOME", _("Temporary home"))]
+RESIDENCE_CHOICES = [("BASE", _("Base")), ("TEMPORARY_HOME", _("Temporary home"))]
 
 """ Gdzie to ma mieć dokładnie zastosowanie? """
 ALLERGY_CATEGORY = [
@@ -44,14 +42,14 @@ DOCTOR_CHOICES = [
 
 
 class Allergy(models.Model):
-    category = models.CharField(max_length=255, choices=ALLERGY_CATEGORY, verbose_name=_('Allergy category'))
+    category = models.CharField(max_length=255, choices=ALLERGY_CATEGORY, verbose_name=_("Allergy category"))
     name = models.CharField(max_length=255, verbose_name=_("Allergy name"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return _('Allergy') + f': {self.category} {self.name}'
+        return _("Allergy") + f": {self.category} {self.name}"
 
     class Meta:
         verbose_name = _("Allergy")
@@ -65,7 +63,7 @@ class Medication(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return _('Medication') + f': {self.name}'
+        return _("Medication") + f": {self.name}"
 
     class Meta:
         verbose_name = _("Medication")
@@ -79,7 +77,7 @@ class Vaccination(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return _('Vaccination') + f': {self.name}'
+        return _("Vaccination") + f": {self.name}"
 
     class Meta:
         verbose_name = _("Vaccination")
@@ -162,41 +160,35 @@ class Animal(models.Model):
     name = models.CharField(
         max_length=255,
         validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))],
-        verbose_name=_('Name')
+        verbose_name=_("Name"),
     )
     slug = AutoSlugField(populate_from="name", unique=True, auto_created=True, always_update=True)
 
     animal_type = models.CharField(max_length=255, choices=TYPE_CHOICES, verbose_name=_("Type"))
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, verbose_name=_("Gender"))
 
-    birth_date = models.DateField(verbose_name=_('Birth date'))
-    description = models.TextField(blank=True, verbose_name=_('Description'))
+    birth_date = models.DateField(verbose_name=_("Birth date"))
+    description = models.TextField(blank=True, verbose_name=_("Description"))
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="UNADOPTABLE", verbose_name=_("Status"))
 
-    location_where_found = models.CharField(max_length=255, verbose_name=_('Location where found'))
-    date_when_found = models.DateField(verbose_name=_('Date when found'))
+    location_where_found = models.CharField(max_length=255, verbose_name=_("Location where found"))
+    date_when_found = models.DateField(verbose_name=_("Date when found"))
 
-    residence = models.CharField(max_length=255, choices=RESIDENCE_CHOICES, default="BASE", verbose_name=_('Residence'))
-    description_of_health = models.TextField(blank=True, verbose_name=_('Health description'))
+    residence = models.CharField(
+        max_length=255, choices=RESIDENCE_CHOICES, default="BASE", verbose_name=_("Residence")
+    )
+    description_of_health = models.TextField(blank=True, verbose_name=_("Health description"))
 
-    image = models.ImageField(upload_to="animals/", verbose_name=_('Photo'))
+    image = models.ImageField(upload_to="animals/", verbose_name=_("Photo"))
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="animals",
-        verbose_name=_('User'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="animals", verbose_name=_("User"))
 
     home = models.ForeignKey(
-        TemporaryHome,
-        on_delete=models.CASCADE,
-        related_name="animals",
-        blank=True,
-        null=True,
-        verbose_name=_('Home'))
+        TemporaryHome, on_delete=models.CASCADE, related_name="animals", blank=True, null=True, verbose_name=_("Home")
+    )
 
     def __str__(self):
         return f"{_(self.animal_type)} {self.name}"
@@ -218,11 +210,17 @@ class HealthCard(models.Model):
         max_length=40,
         alphabet="abcdefg1234",
     )
-    animal = models.OneToOneField(Animal, on_delete=models.CASCADE, related_name="healthcards", verbose_name=_('Animal'))
+    animal = models.OneToOneField(
+        Animal, on_delete=models.CASCADE, related_name="healthcards", verbose_name=_("Animal")
+    )
 
-    allergies = models.ManyToManyField(Allergy, through='HealthCardAllergy', blank=True, verbose_name=_("Allergies"))
-    drugs = models.ManyToManyField(Medication, through='HealthCardMedication', blank=True, verbose_name=_("Medications"))
-    vaccinations = models.ManyToManyField(Vaccination, through='HealthCardVaccination', blank=True, verbose_name=_("Vaccinations"))
+    allergies = models.ManyToManyField(Allergy, through="HealthCardAllergy", blank=True, verbose_name=_("Allergies"))
+    drugs = models.ManyToManyField(
+        Medication, through="HealthCardMedication", blank=True, verbose_name=_("Medications")
+    )
+    vaccinations = models.ManyToManyField(
+        Vaccination, through="HealthCardVaccination", blank=True, verbose_name=_("Vaccinations")
+    )
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -252,9 +250,9 @@ class VeterinaryVisit(models.Model):
 
 
 class HealthCardAllergy(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
-    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, verbose_name=_('Allergy'))
-    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, verbose_name=_("Allergy"))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -267,9 +265,9 @@ class HealthCardAllergy(models.Model):
 
 
 class HealthCardMedication(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
-    medication = models.ForeignKey(Medication, on_delete=models.CASCADE, verbose_name=_('Medication'))
-    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    medication = models.ForeignKey(Medication, on_delete=models.CASCADE, verbose_name=_("Medication"))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -282,10 +280,10 @@ class HealthCardMedication(models.Model):
 
 
 class HealthCardVaccination(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_('Health card'))
-    vaccination = models.ForeignKey(Vaccination, on_delete=models.CASCADE, verbose_name=_('Vaccination'))
-    vaccination_date = models.DateField(verbose_name=_('Vaccination date'))
-    description = models.TextField(max_length=255, blank=True, verbose_name=_('Description'))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    vaccination = models.ForeignKey(Vaccination, on_delete=models.CASCADE, verbose_name=_("Vaccination"))
+    vaccination_date = models.DateField(verbose_name=_("Vaccination date"))
+    description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
