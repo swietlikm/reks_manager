@@ -1,5 +1,6 @@
 from django.contrib import admin
 from reks_manager.core.models import Adopter, Animal, TemporaryHome, HealthCard, VeterinaryVisit, HealthCardAllergy, HealthCardMedication, HealthCardVaccination, Allergy, Medication, Vaccination
+from django.utils.translation import gettext as _
 
 
 @admin.register(Adopter)
@@ -24,7 +25,7 @@ class AnimalAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at', 'updated_at')
     search_fields = ('name',)
     readonly_fields = ('id',)
-    exclude = ['user']
+    # exclude = ['user']
 
 
 @admin.register(TemporaryHome)
@@ -87,11 +88,30 @@ class HealthCardAdmin(admin.ModelAdmin):
     inlines = [HealthCardVaccinationInline, HealthCardAllergyInline, HealthCardMedicationInline]
     list_display = (
         'animal',
+        'allergies_count',
+        'medications_count',
+        'vaccinations_count',
         'created_at',
         'updated_at',
     )
     fields = ('animal',)
     readonly_fields = ('id',)
+    list_filter = ('animal', 'created_at', 'updated_at',)
+
+    def allergies_count(self, obj):
+        return obj.allergies.count()
+    allergies_count.short_description = _('Allergies Count')
+    allergies_count.admin_order_field = 'allergies__count'
+
+    def medications_count(self, obj):
+        return obj.drugs.count()
+    medications_count.short_description = _('Medications Count')
+    medications_count.admin_order_field = 'medications__count'
+
+    def vaccinations_count(self, obj):
+        return obj.drugs.count()
+    vaccinations_count.short_description = _('Vaccinations Count')
+    vaccinations_count.admin_order_field = 'vaccinations__count'
 
 
 @admin.register(Allergy)

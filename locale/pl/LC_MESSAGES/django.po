@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-25 21:02+0200\n"
+"POT-Creation-Date: 2023-10-25 21:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,24 @@ msgstr "Angielski"
 #: .\config\settings\base.py:33
 msgid "Polish"
 msgstr "Polski"
+
+#: .\reks_manager\core\admin.py:103
+#, fuzzy
+#| msgid "Allergies"
+msgid "Allergies Count"
+msgstr "Ilość alergii"
+
+#: .\reks_manager\core\admin.py:109
+#, fuzzy
+#| msgid "Medications"
+msgid "Medications Count"
+msgstr "Ilość leków"
+
+#: .\reks_manager\core\admin.py:114
+#, fuzzy
+#| msgid "Vaccinations"
+msgid "Vaccinations Count"
+msgstr "Ilość szczepionek"
 
 #: .\reks_manager\core\apps.py:7
 msgid "Core"
@@ -90,7 +108,7 @@ msgstr "Kategoria alergii"
 
 #: .\reks_manager\core\models.py:48
 msgid "Allergy name"
-msgstr "Nazwa alergi"
+msgstr "Alergen"
 
 #: .\reks_manager\core\models.py:49 .\reks_manager\core\models.py:63
 #: .\reks_manager\core\models.py:77 .\reks_manager\core\models.py:173
@@ -266,7 +284,7 @@ msgstr "Dom"
 msgid "Date when found cannot be before the birth date."
 msgstr "Data znalezienia nie może być przed datą urodzenia"
 
-#: .\reks_manager\core\models.py:210
+#: .\reks_manager\core\models.py:210 .\reks_manager\core\models.py:221
 msgid "Animal"
 msgstr "Zwierze"
 
