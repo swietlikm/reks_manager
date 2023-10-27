@@ -68,14 +68,14 @@ STORAGES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
-    default="reks_manager <noreply@example.com>",
+    default="Reks manager <noreply@reks_manager.pl>",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX",
-    default="[reks_manager] ",
+    default="[Reks manager] ",
 )
 
 # ADMIN
@@ -145,7 +145,5 @@ LOGGING = {
 # -------------------------------------------------------------------------------
 # Tools that generate code samples can use SERVERS to point to the correct domain
 SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa: F405
-    {"url": "https://example.com", "description": "Production server"},
+    {"url": "https://reks-manager-bhyqs.ondigitalocean.app", "description": "Development server"},
 ]
-# Your stuff...
-# ------------------------------------------------------------------------------

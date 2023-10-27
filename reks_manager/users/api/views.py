@@ -1,13 +1,59 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.response import Response
+from rest_framework.views import exception_handler
 from rest_framework.viewsets import GenericViewSet
+from rest_framework import authentication, exceptions
 
 from .serializers import UserSerializer
 
 User = get_user_model()
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email,
+            'name': user.name,
+        })
+
+#
+# class CustomAuthentication(authentication.BaseAuthentication):
+#     def authenticate(self, request):
+#         username = request.META.get('HTTP_X_USERNAME')
+#         if not username:
+#             return None
+#
+#         try:
+#             user = User.objects.get(username=username)
+#         except User.DoesNotExist:
+#             raise exceptions.AuthenticationFailed('No such user')
+#
+#         return (user, None)
+
+
+def custom_exception_handler(exc, context):
+    response = exception_handler(exc, context)
+
+    if response is not None:
+        # Check if the response contains 'non_field_errors' and format it as needed
+        if 'non_field_errors' in response.data:
+            response.data['message'] = response.data['non_field_errors'][0]
+            del response.data['non_field_errors']
+
+    return response
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
