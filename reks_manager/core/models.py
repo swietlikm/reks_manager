@@ -9,29 +9,29 @@ from django.utils.translation import gettext as _
 User = get_user_model()
 
 STATUS_CHOICES = [
-    ("FOR_ADOPTION", _("For Adoption")),
-    ("ADOPTED", _("Adopted")),
-    ("QUARANTINE", _("Quarantine")),
-    ("UNADOPTABLE", _("Unadoptable")),
+    ("DO_ADOPCJI", _("For Adoption")),
+    ("ZAADOPTOWANY", _("Zaadoptowany")),
+    ("KWARANTANNA", _("Kwarantanna")),
+    ("NIEADOPTOWALNY", _("Nieadoptowalny")),
 ]
 
 GENDER_CHOICES = [
-    ("MALE", _("Male")),
-    ("FEMALE", _("Female")),
+    ("SAMIEC", _("Samiec")),
+    ("SAMICA", _("Samica")),
 ]
 
 TYPE_CHOICES = [
-    ("DOG", _("Dog")),
-    ("CAT", _("Cat")),
+    ("PIES", _("Pies")),
+    ("KOT", _("Kot")),
 ]
 
-RESIDENCE_CHOICES = [("BASE", _("Base")), ("TEMPORARY_HOME", _("Temporary home"))]
+RESIDENCE_CHOICES = [("SCHRONISKO", _("Schronisko")), ("TYMCZASOWY_DOM", _("Tymczasowy dom"))]
 
 """ Gdzie to ma mieć dokładnie zastosowanie? """
 ALLERGY_CATEGORY = [
-    ("FOOD", _("Food")),
-    ("CONTACT", _("Contact")),
-    ("INHALATION", _("Inhalation")),
+    ("POKARM", _("Pokarm")),
+    ("KONTAKT", _("Kontakt")),
+    ("INHALACJA", _("Inhalacja")),
 ]
 
 DOCTOR_CHOICES = [
@@ -169,22 +169,22 @@ class Animal(models.Model):
 
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
-    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="UNADOPTABLE", verbose_name=_("Status"))
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIEADOPTOWALNY", verbose_name=_("Status"))
 
-    location_where_found = models.CharField(max_length=255, verbose_name=_("Location where found"))
-    date_when_found = models.DateField(verbose_name=_("Date when found"))
+    location_where_found = models.CharField(blank=True, max_length=255, verbose_name=_("Location where found"))
+    date_when_found = models.DateField(blank=True, null=True, verbose_name=_("Date when found"))
 
     residence = models.CharField(
-        max_length=255, choices=RESIDENCE_CHOICES, default="BASE", verbose_name=_("Residence")
+        max_length=255, choices=RESIDENCE_CHOICES, default="SCHRONISKO", verbose_name=_("Residence")
     )
     description_of_health = models.TextField(blank=True, verbose_name=_("Health description"))
 
-    image = models.ImageField(upload_to="animals/", verbose_name=_("Photo"))
+    image = models.ImageField(blank=True, null=True, upload_to="animals/", verbose_name=_("Photo"))
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="animals", verbose_name=_("User"))
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="animals", verbose_name=_("Added by"))
 
     home = models.ForeignKey(
         TemporaryHome, on_delete=models.CASCADE, related_name="animals", blank=True, null=True, verbose_name=_("Home")
@@ -215,7 +215,7 @@ class HealthCard(models.Model):
     )
 
     allergies = models.ManyToManyField(Allergy, through="HealthCardAllergy", blank=True, verbose_name=_("Allergies"))
-    drugs = models.ManyToManyField(
+    medications = models.ManyToManyField(
         Medication, through="HealthCardMedication", blank=True, verbose_name=_("Medications")
     )
     vaccinations = models.ManyToManyField(

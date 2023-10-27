@@ -30,7 +30,7 @@ class AnimalAdmin(admin.ModelAdmin):
         "name",
         "status",
         "residence",
-        "user",
+        "added_by",
         "created_at",
         "updated_at",
     )
@@ -121,13 +121,13 @@ class HealthCardAdmin(admin.ModelAdmin):
     allergies_count.admin_order_field = "allergies__count"
 
     def medications_count(self, obj):
-        return obj.drugs.count()
+        return obj.medications.count()
 
     medications_count.short_description = _("Medications Count")
     medications_count.admin_order_field = "medications__count"
 
     def vaccinations_count(self, obj):
-        return obj.drugs.count()
+        return obj.vaccinations.count()
 
     vaccinations_count.short_description = _("Vaccinations Count")
     vaccinations_count.admin_order_field = "vaccinations__count"
