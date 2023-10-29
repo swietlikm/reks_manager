@@ -75,7 +75,7 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-   # "django.contrib.sites",
+     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
@@ -92,6 +92,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
+    'dj_rest_auth.registration',
     "corsheaders",
     "drf_spectacular",
 ]
@@ -321,3 +322,6 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+DEFAULT_FROM_EMAIL = 'mswbooking@gmail.com'
+SERVER_EMAIL = 'mswbooking@gmail.com'
+EMAIL_HOST_USER = 'mswbooking@gmail.com'

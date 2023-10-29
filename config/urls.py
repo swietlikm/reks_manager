@@ -28,6 +28,7 @@ urlpatterns += [
     # path("auth-token/", obtain_auth_token),
     path("auth-token/", CustomAuthToken.as_view()),
     path('auth/', include('dj_rest_auth.urls')),
+    path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
 
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),

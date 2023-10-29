@@ -1,3 +1,4 @@
+from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -15,3 +16,9 @@ class UserSerializer(serializers.ModelSerializer[UserType]):
         # extra_kwargs = {
         #     "url": {"view_name": "dj-rest-auth:rest_user_details", "lookup_field": "pk"},
         # }
+
+
+class CustomRegistrationSerializer(RegisterSerializer):
+    username = None
+    first_name = serializers.CharField(min_length=2)
+    last_name = serializers.CharField(min_length=2)

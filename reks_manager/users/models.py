@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator
 from django.db.models import CharField, EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -17,8 +18,16 @@ class User(AbstractUser):
         verbose_name = _("User")
         verbose_name_plural = _("Users")
 
-    first_name = CharField(_("First name"),max_length=255)
-    last_name = CharField(_("Last name"),max_length=255)
+    first_name = CharField(
+        _("First name"),
+        max_length=255,
+        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))]
+    )
+    last_name = CharField(
+        _("Last name"),
+        max_length=255,
+        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))]
+    )
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
 
