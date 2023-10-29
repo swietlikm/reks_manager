@@ -12,7 +12,7 @@ STATUS_CHOICES = [
     ("DO_ADOPCJI", _("For Adoption")),
     ("ZAADOPTOWANY", _("Zaadoptowany")),
     ("KWARANTANNA", _("Kwarantanna")),
-    ("NIEADOPTOWALNY", _("Nieadoptowalny")),
+    ("NIE_DO_ADOPCJI", _("Nie do adopcji")),
 ]
 
 GENDER_CHOICES = [
@@ -169,7 +169,7 @@ class Animal(models.Model):
 
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
-    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIEADOPTOWALNY", verbose_name=_("Status"))
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status"))
 
     location_where_found = models.CharField(blank=True, max_length=255, verbose_name=_("Location where found"))
     date_when_found = models.DateField(blank=True, null=True, verbose_name=_("Date when found"))

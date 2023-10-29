@@ -9,7 +9,7 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-router.register("users", UserViewSet)
+# router.register("users", UserViewSet)
 router.register("animals", AnimalsViewSet)
 router.register("animal", AnimalViewSet)
 

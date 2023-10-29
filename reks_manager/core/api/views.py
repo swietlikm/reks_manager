@@ -1,14 +1,16 @@
+from reks_manager.core.models import Animal, HealthCard
 from rest_framework import filters
 from rest_framework.mixins import ListModelMixin
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+
 from .serializers import AnimalSerializer, HealthCardSerializer
 
 
-from reks_manager.core.models import Animal, HealthCard
-
-
 class AnimalsViewSet(ListModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
@@ -17,6 +19,8 @@ class AnimalsViewSet(ListModelMixin, GenericViewSet):
 
 
 class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
     lookup_field = "pk"

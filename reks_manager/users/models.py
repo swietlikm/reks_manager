@@ -17,9 +17,8 @@ class User(AbstractUser):
         verbose_name = _("User")
         verbose_name_plural = _("Users")
 
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = None  # type: ignore
-    last_name = None  # type: ignore
+    first_name = CharField(_("First name"),max_length=255)
+    last_name = CharField(_("Last name"),max_length=255)
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
 

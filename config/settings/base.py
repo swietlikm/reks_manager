@@ -3,7 +3,13 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 from .jazzmin import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
+from .rest_auth import REST_AUTH
 import environ
+
+
+JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+JAZZMIN_UI_TWEAKS = JAZZMIN_UI_TWEAKS
+REST_AUTH = REST_AUTH
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # reks_manager/
@@ -85,6 +91,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "rest_framework",
     "rest_framework.authtoken",
+    "dj_rest_auth",
     "corsheaders",
     "drf_spectacular",
 ]
@@ -293,7 +300,7 @@ SOCIALACCOUNT_FORMS = {"signup": "reks_manager.users.forms.UserSocialSignupForm"
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
     "EXCEPTION_HANDLER": "reks_manager.users.api.views.custom_exception_handler",

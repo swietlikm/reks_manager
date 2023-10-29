@@ -26,22 +26,9 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,
-            'name': user.name,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
         })
-
-#
-# class CustomAuthentication(authentication.BaseAuthentication):
-#     def authenticate(self, request):
-#         username = request.META.get('HTTP_X_USERNAME')
-#         if not username:
-#             return None
-#
-#         try:
-#             user = User.objects.get(username=username)
-#         except User.DoesNotExist:
-#             raise exceptions.AuthenticationFailed('No such user')
-#
-#         return (user, None)
 
 
 def custom_exception_handler(exc, context):

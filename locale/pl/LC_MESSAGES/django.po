@@ -458,7 +458,7 @@ msgstr ""
 #: .\reks_manager\templates\account\login.html:50
 #: .\reks_manager\templates\base.html:82
 msgid "Sign In"
-msgstr ""
+msgstr "Logowanie"
 
 #: .\reks_manager\templates\account\login.html:15
 msgid "Please sign in with one of your existing third party accounts:"
@@ -571,7 +571,7 @@ msgstr "Rejestracja"
 #: .\reks_manager\templates\account\signup.html:25
 #: .\reks_manager\templates\base.html:77
 msgid "Sign Up"
-msgstr "Logowanie"
+msgstr "Rejestracja"
 
 #: .\reks_manager\templates\account\signup.html:12
 #, python-format
@@ -582,7 +582,7 @@ msgstr ""
 #: .\reks_manager\templates\account\signup_closed.html:6
 #: .\reks_manager\templates\account\signup_closed.html:9
 msgid "Sign Up Closed"
-msgstr ""
+msgstr "Rejestracja zamknięta"
 
 #: .\reks_manager\templates\account\signup_closed.html:10
 msgid "We are sorry, but the sign up is currently closed."
