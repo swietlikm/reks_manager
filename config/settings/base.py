@@ -75,7 +75,7 @@ DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-     "django.contrib.sites",
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
@@ -91,14 +91,15 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "rest_framework",
     "rest_framework.authtoken",
-    "dj_rest_auth",
-    'dj_rest_auth.registration',
+    # "dj_rest_auth",
+    # 'dj_rest_auth.registration',
     "corsheaders",
     "drf_spectacular",
 ]
 
 LOCAL_APPS = [
     "reks_manager.users",
+    "reks_manager.user_auth",
     "reks_manager.core",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -136,9 +137,9 @@ PASSWORD_HASHERS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    # {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    # {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    # {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # MIDDLEWARE

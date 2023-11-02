@@ -250,7 +250,7 @@ class VeterinaryVisit(models.Model):
 
 
 class HealthCardAllergy(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardallergies')
     allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, verbose_name=_("Allergy"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -265,7 +265,7 @@ class HealthCardAllergy(models.Model):
 
 
 class HealthCardMedication(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardmedications')
     medication = models.ForeignKey(Medication, on_delete=models.CASCADE, verbose_name=_("Medication"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -280,7 +280,7 @@ class HealthCardMedication(models.Model):
 
 
 class HealthCardVaccination(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"))
+    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardvaccinations')
     vaccination = models.ForeignKey(Vaccination, on_delete=models.CASCADE, verbose_name=_("Vaccination"))
     vaccination_date = models.DateField(verbose_name=_("Vaccination date"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))

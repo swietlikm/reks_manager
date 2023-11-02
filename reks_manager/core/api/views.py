@@ -1,4 +1,4 @@
-from reks_manager.core.models import Animal, HealthCard
+from ..models import Animal, HealthCard
 from rest_framework import filters
 from rest_framework.mixins import ListModelMixin
 from rest_framework.mixins import RetrieveModelMixin

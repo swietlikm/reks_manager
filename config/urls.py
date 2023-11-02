@@ -25,12 +25,10 @@ urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     # DRF auth token
-    # path("auth-token/", obtain_auth_token),
     path("auth-token/", CustomAuthToken.as_view()),
-    path('auth/', include('dj_rest_auth.urls')),
-    path('auth/', include('dj_rest_auth.urls')),
-    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/', include('reks_manager.user_auth.urls')),
 
+    # doc
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(
         "api/docs/",

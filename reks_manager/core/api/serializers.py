@@ -1,42 +1,71 @@
 from rest_framework import serializers
 
-from reks_manager.core.models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit
-from reks_manager.users.api.serializers import UserSerializer
+from ..models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy
+from ...users.api.serializers import UserSerializer
 
 
 class AllergiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allergy
-        fields = "__all__"
+        fields = ['category', 'name', 'description']
 
 
 class MedicationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medication
-        fields = "__all__"
+        fields = ['name', 'description']
 
 
-class VaccinationSerializer(serializers.ModelSerializer):
+class VaccinationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vaccination
-        fields = "__all__"
+        fields = ['name', 'description']
 
 
 class VeterinaryVisitsSerializer(serializers.ModelSerializer):
     class Meta:
         model = VeterinaryVisit
-        fields = "__all__"
+        fields = ['doctor', 'date', 'description']
+
+
+class HealthCardAllergySerializer(serializers.ModelSerializer):
+    allergy = AllergiesSerializer(read_only=True)
+
+    class Meta:
+        model = HealthCardAllergy
+        fields = ['allergy', 'description']
+
+
+class HealthCardMedicationSerializer(serializers.ModelSerializer):
+    medication = MedicationsSerializer(read_only=True)
+
+    class Meta:
+        model = HealthCardMedication
+        fields = ['medication', 'description']
+
+
+class HealthCardVaccinationSerializer(serializers.ModelSerializer):
+    vaccination = VaccinationsSerializer(read_only=True)
+
+    class Meta:
+        model = HealthCardVaccination
+        fields = ['vaccination', 'vaccination_date', 'description']
 
 
 class HealthCardSerializer(serializers.ModelSerializer):
-    allergies = AllergiesSerializer(many=True, read_only=True)
-    medications = MedicationsSerializer(many=True, read_only=True)
-    vaccinations = VaccinationSerializer(many=True, read_only=True)
+    allergies = HealthCardAllergySerializer(many=True, read_only=True, source='healthcardallergies')
+    medications = HealthCardMedicationSerializer(many=True, read_only=True, source='healthcardmedications')
+    vaccinations = HealthCardVaccinationSerializer(many=True, read_only=True, source='healthcardvaccinations')
     veterinary_visits = VeterinaryVisitsSerializer(many=True, read_only=True, source='veterinaryvisits')
 
     class Meta:
         model = HealthCard
-        fields = "__all__"
+        fields = [
+            'allergies',
+            'medications',
+            'vaccinations',
+            'veterinary_visits',
+        ]
 
 
 class AnimalSerializer(serializers.ModelSerializer):
