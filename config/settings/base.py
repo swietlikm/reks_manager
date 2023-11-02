@@ -323,6 +323,3 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
-DEFAULT_FROM_EMAIL = 'mswbooking@gmail.com'
-SERVER_EMAIL = 'mswbooking@gmail.com'
-EMAIL_HOST_USER = 'mswbooking@gmail.com'
