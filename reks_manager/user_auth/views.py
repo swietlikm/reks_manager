@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
-from ipware import get_client_ip
+
 from reks_manager.user_auth.serializers import (
     PasswordResetSerializer,
     PasswordResetConfirmSerializer,
