@@ -14,6 +14,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from .models import SignupCode
 from .forms import AllAuthPasswordResetForm
 
 UserModel = get_user_model()
@@ -29,9 +30,6 @@ class PasswordResetSerializer(serializers.Serializer):
 
     @property
     def password_reset_form_class(self):
-        """
-        Get the PasswordResetForm class.
-        """
         return AllAuthPasswordResetForm
 
     def validate_email(self, value):
@@ -182,11 +180,8 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = ('email',)
 
 
-class RegisterLinkSerializer(serializers.Serializer):
-    """
-    Serializer for registering with a link.
-    """
-    email = serializers.EmailField()
+class RegistrationLinkSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255)
 
     def validate_email(self, email):
         """
@@ -199,43 +194,8 @@ class RegisterLinkSerializer(serializers.Serializer):
                 )
         return email
 
-    def get_cleaned_data(self):
-        """
-        Get cleaned data.
-        """
-        return {
-            'email': self.validated_data.get('email', ''),
-            'password1': self._generate_password()
-        }
 
-    def _generate_password(self, length=12):
-        """
-        Generate a random password.
-        """
-        alphabet = string.ascii_letters + string.digits + string.punctuation
-        return ''.join(secrets.choice(alphabet) for _ in range(length))
-
-    def save(self, request):
-        """
-        Save the registration with a link.
-        """
-        adapter = get_adapter()
-        user = adapter.new_user(request)
-        self.cleaned_data = self.get_cleaned_data()
-        user = adapter.save_user(request, user, self, commit=False)
-        if "password1" in self.cleaned_data:
-            try:
-                adapter.clean_password(self.cleaned_data['password1'], user=user)
-            except DjangoValidationError as exc:
-                raise serializers.ValidationError(
-                    detail=serializers.as_serializer_error(exc)
-                )
-        user.save()
-        setup_user_email(request, user, [])
-        return user
-
-
-class RegisterSerializer(serializers.Serializer):
+class RegistrationFinishSerializer(serializers.Serializer):
     """
     Serializer for user registration.
     """
@@ -250,6 +210,11 @@ class RegisterSerializer(serializers.Serializer):
         Validate the password.
         """
         return get_adapter().clean_password(password)
+
+    def validate_key(self, key):
+        signup_code = SignupCode.objects.filter(code=key).exists()
+        if not signup_code:
+            raise serializers.ValidationError(_("Invalid registration code"))
 
     def validate(self, data):
         """

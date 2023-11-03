@@ -10,15 +10,18 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 
 
-def default_url_generator(request, user, temp_key):
-    path = reverse(
-        'user_auth:password_reset_confirm',
-        args=[user_pk_to_url_str(user), temp_key],
-    )
-    url = build_absolute_uri(request, path)
-    url = url.replace('%3F', '?')
+# def default_url_generator(request, user, temp_key):
+#     path = reverse(
+#         'user_auth:password_reset_confirm',
+#         args=[user_pk_to_url_str(user), temp_key],
+#     )
+#     url = build_absolute_uri(request, path)
+#     url = url.replace('%3F', '?')
+#
+#     return url
 
-    return url
+def default_url_generator(request, user, temp_key):
+    return 'https://reks-manager.pl/reset-password/' + user_pk_to_url_str(user) + '-' + temp_key
 
 
 class AllAuthPasswordResetForm(ResetPasswordForm):

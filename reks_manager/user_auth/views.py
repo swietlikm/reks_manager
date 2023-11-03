@@ -7,13 +7,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
+from ipware import get_client_ip
 from reks_manager.user_auth.serializers import (
     PasswordResetSerializer,
     PasswordResetConfirmSerializer,
     PasswordChangeSerializer,
     UserDetailsSerializer,
-    RegisterLinkSerializer,
-    RegisterSerializer,
+    # RegisterLinkSerializer,
+    # RegisterSerializer
+    RegistrationLinkSerializer,
+    RegistrationFinishSerializer
 )
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -22,6 +25,7 @@ from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView, Creat
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .models import _generate_code, SignupCode
 
 UserModel = get_user_model()
 
@@ -40,7 +44,6 @@ class LogoutView(GenericAPIView):
     Accepts/Returns nothing.
     """
     permission_classes = (AllowAny,)
-    serializer_class = None
     throttle_scope = 'user_auth'
 
     def post(self, request, *args, **kwargs):
@@ -177,115 +180,79 @@ class UserDetailsView(RetrieveUpdateAPIView):
         return UserModel.objects.none()
 
 
-class RegisterLinkView(CreateAPIView):
-    """
-    Create a user with a registration link.
-    """
-    serializer_class = RegisterLinkSerializer
+class RegistrationLinkView(APIView):
     permission_classes = (IsAdminUser,)
-    token_model = Token
-    throttle_scope = 'auth_user'
+    serializer_class = RegistrationLinkSerializer
 
-    @sensitive_post_parameters_m
-    def dispatch(self, *args, **kwargs):
-        """
-        Perform user registration via a link.
-        """
-        return super().dispatch(*args, **kwargs)
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
 
-    def get_response_data(self, user):
-        """
-        Get the registration response data.
-        """
-        return {'detail': _('Registration e-mail sent.')}
+        if serializer.is_valid():
+            email = serializer.data['email']
+            password = _generate_code()
+            try:
+                user = get_user_model().objects.get(email=email)
+                useremail = EmailAddress.objects.get(user=user, email=email)
+                if useremail.verified:
+                    content = {'detail': _('Email address already taken.')}
+                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
+                try:
+                    # Delete old signup codes
+                    signup_code = SignupCode.objects.get(user=user)
+                    signup_code.delete()
+                except SignupCode.DoesNotExist:
+                    pass
 
-    def create(self, request, *args, **kwargs):
-        """
-        Create a new user with a registration link.
-        """
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data['email']
+            except get_user_model().DoesNotExist:
+                user = get_user_model().objects.create_user(email=email)
 
-        # Check if a user with the given email address already exists
-        try:
-            user = UserModel.objects.get(email=email)
-        except UserModel.DoesNotExist:
-            user = None
+            # Set user fields provided
+            user.set_password(password)
+            user.save()
+            emailaddress, _ = EmailAddress.objects.get_or_create(user=user, email=email)
+            emailaddress.primary = True
+            signup_code = SignupCode.objects.create_signup_code(user)
+            signup_code.send_signup_email()
 
-        if user:
-            # Check if the user's email is not verified, then send a verification email
-            email_address = EmailAddress.objects.get(user=user, email=email)
-            if not email_address.verified:
-                email_address.send_confirmation(request)
-                return Response({'detail': _('Verification e-mail sent.')}, status=status.HTTP_200_OK)
+            content = {'email': email}
+            return Response(content, status=status.HTTP_201_CREATED)
 
-        if user is None:
-            # If the user doesn't exist, proceed with user creation
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            user = self.perform_create(serializer)
-
-        headers = self.get_success_headers(serializer.data)
-        data = self.get_response_data(user)
-
-        response = Response(data, status=status.HTTP_201_CREATED, headers=headers)
-        return response
-
-    def perform_create(self, serializer):
-        """
-        Perform user creation with a registration link.
-        """
-        user = serializer.save(self.request)
-        complete_signup(
-            self.request._request, user,
-            allauth_account_settings.EMAIL_VERIFICATION,
-            None,
-        )
-        return user
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RegistrationView(APIView, ConfirmEmailView):
-    """
-    Handle user registration via email confirmation.
-    """
+class RegistrationFinishView(APIView):
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST', 'OPTIONS', 'HEAD')
-
-    @sensitive_post_parameters_m
-    def dispatch(self, *args, **kwargs):
-        """
-        Dispatch user registration view.
-        """
-        return super().dispatch(*args, **kwargs)
 
     def get_serializer(self, *args, **kwargs):
         """
         Get the registration serializer.
-        """
-        return RegisterSerializer(*args, **kwargs)
+         """
+        return RegistrationFinishSerializer(*args, **kwargs)
 
-    def get(self, *args, **kwargs):
-        """
-        Handle GET method, not allowed.
-        """
-        raise MethodNotAllowed('GET')
-
-    def post(self, request, *args, **kwargs):
-        """
-        Handle user registration via email confirmation.
-        """
+    def post(self, request, format=None):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         cleaned_data = serializer.get_cleaned_data()
-        self.kwargs['key'] = cleaned_data['key']
-        confirmation = self.get_object()
-        user = confirmation.email_address.user
+        key = cleaned_data.get('key')
+        verified = SignupCode.objects.set_user_is_verified(key)
 
-        user.first_name = cleaned_data['first_name']
-        user.last_name = cleaned_data['last_name']
-        user.set_password = cleaned_data['password1']
-        user.is_staff = True
-        user.save()
-        confirmation.confirm(self.request)
-        return Response({'detail': _('ok')}, status=status.HTTP_200_OK)
+        if verified:
+            try:
+                signup_code = SignupCode.objects.get(code=key)
+                user = signup_code.user
+                signup_code.delete()
+                email_address = EmailAddress.objects.get(user=user)
+                email_address.set_as_primary()
+                email_address.set_verified()
+                user.first_name = cleaned_data['first_name']
+                user.last_name = cleaned_data['last_name']
+                user.set_password = cleaned_data['password1']
+                user.is_staff = True
+                user.save()
+            except SignupCode.DoesNotExist:
+                pass
+            content = {'detail': _('Registriation success.')}
+            return Response(content, status=status.HTTP_200_OK)
+        else:
+            content = {'detail': _('Unable to finish registration.')}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)

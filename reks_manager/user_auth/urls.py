@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from reks_manager.user_auth.views import LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView, RegisterLinkView, RegistrationView
+from reks_manager.user_auth.views import LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView, RegistrationLinkView, RegistrationFinishView
 
 app_name = "user_auth"
 urlpatterns = [
@@ -13,6 +13,6 @@ urlpatterns = [
         view=PasswordResetConfirmView.as_view(),
         name="password_reset_confirm"),
     # registration
-    path("registration/invite/", view=RegisterLinkView.as_view(), name="registration_invite"),
-    path("registration/finish/", view=RegistrationView.as_view(), name="registration_finish"),
+    path("registration/invite/", view=RegistrationLinkView.as_view(), name="registration_invite"),
+    path("registration/finish/", view=RegistrationFinishView.as_view(), name="registration_finish"),
 ]
