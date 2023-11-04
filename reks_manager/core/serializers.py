@@ -1,31 +1,45 @@
 from rest_framework import serializers
 
-from reks_manager.core.models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy
+from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy, TemporaryHome, Adopter
 from reks_manager.users.api.serializers import UserSerializer
+
+from .models import ALLERGY_CATEGORY
 
 
 class AllergiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Allergy
-        fields = ['category', 'name', 'description']
+        fields = '__all__'
 
 
 class MedicationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medication
-        fields = ['name', 'description']
+        fields = '__all__'
 
 
 class VaccinationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vaccination
-        fields = ['name', 'description']
+        fields = '__all__'
 
 
 class VeterinaryVisitsSerializer(serializers.ModelSerializer):
     class Meta:
         model = VeterinaryVisit
-        fields = ['doctor', 'date', 'description']
+        fields = '__all__'
+
+
+class TemporaryHomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TemporaryHome
+        fields = '__all__'
+
+
+class AdopterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Adopter
+        fields = '__all__'
 
 
 class HealthCardAllergySerializer(serializers.ModelSerializer):
