@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from ..models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy
-from ...users.api.serializers import UserSerializer
+from reks_manager.core.models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy
+from reks_manager.users.api.serializers import UserSerializer
 
 
 class AllergiesSerializer(serializers.ModelSerializer):

@@ -1,14 +1,9 @@
 import binascii
 import os
-import secrets
-import string
-
-from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.template.loader import render_to_string
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail, EmailMultiAlternatives
 
@@ -19,14 +14,6 @@ User = get_user_model()
 
 def _generate_code():
     return binascii.hexlify(os.urandom(20)).decode('utf-8')
-#
-#
-# def _generate_password(self, length=12):
-#     """
-#     Generate a random password.
-#     """
-#     alphabet = string.ascii_letters + string.digits + string.punctuation
-#     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
 
 class SignupCodeManager(models.Manager):

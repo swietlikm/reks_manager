@@ -1,30 +1,23 @@
-from allauth.account import app_settings as allauth_account_settings
 from allauth.account.models import EmailAddress
-from allauth.account.utils import complete_signup
-from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import logout as django_logout, get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.debug import sensitive_post_parameters
-
 from reks_manager.user_auth.serializers import (
     PasswordResetSerializer,
     PasswordResetConfirmSerializer,
     PasswordChangeSerializer,
     UserDetailsSerializer,
-    # RegisterLinkSerializer,
-    # RegisterSerializer
     RegistrationLinkSerializer,
     RegistrationFinishSerializer
 )
 from rest_framework import status
-from rest_framework.authtoken.models import Token
-from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView, CreateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .models import _generate_code, SignupCode
 
 UserModel = get_user_model()
