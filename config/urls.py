@@ -22,10 +22,10 @@ urlpatterns = [
 
 # API URLS
 urlpatterns += [
-    # API base url
-    path("api/", include("config.api_router")),
     # DRF auth token
     path("auth-token/", CustomAuthToken.as_view()),
+    # API base url
+    path("api/", include("config.api_router")),
     path('auth/', include('reks_manager.user_auth.urls')),
 
     # doc

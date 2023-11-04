@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination
-from .serializers import AnimalSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer
+from .serializers import AnimalSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer
 
 
 class BaseAdminAbstractView(ModelViewSet):
@@ -48,7 +48,6 @@ class VaccinationView(BaseAdminAbstractView):
 
 
 class AnimalsViewSet(ListModelMixin, GenericViewSet):
-    authentication_classes = []
     permission_classes = [IsAdminUser,]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
@@ -58,8 +57,7 @@ class AnimalsViewSet(ListModelMixin, GenericViewSet):
 
 
 class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
-    authentication_classes = []
-    permission_classes = []
+    permission_classes = [IsAdminUser,]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
     lookup_field = "pk"
@@ -68,3 +66,18 @@ class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
 class HealthCardViewSet(ModelViewSet):
     queryset = HealthCard.objects.all()
     serializer_class = HealthCardSerializer
+
+#  ------------------------------------------------------------
+#  PUBLIC
+#  ------------------------------------------------------------
+
+
+class AnimalsPublicViewSet(ListModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny,]
+    serializer_class = AnimalPublicSerializer
+    queryset = Animal.objects.all()
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ["name", "slug", "animal_type", "status"]
+    ordering_fields = ["name", "animal_type", "status", "birth_date"]
+

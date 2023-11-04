@@ -99,3 +99,25 @@ class AnimalSerializer(serializers.ModelSerializer):
         ]
 
 
+#  ------------------------------------------------------------
+#  PUBLIC
+#  ------------------------------------------------------------
+
+
+class AnimalPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Animal
+        fields = [
+            "name",
+            "slug",
+            "animal_type",
+            "gender",
+            "birth_date",
+            "description",
+            "status",
+            "description_of_health",
+            "residence",
+            "image",
+
+            "created_at",
+        ]
