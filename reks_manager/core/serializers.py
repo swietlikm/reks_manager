@@ -1,9 +1,8 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy, TemporaryHome, Adopter
 from reks_manager.users.api.serializers import UserSerializer
-
-from .models import ALLERGY_CATEGORY
 
 
 class AllergiesSerializer(serializers.ModelSerializer):
@@ -23,11 +22,21 @@ class VaccinationsSerializer(serializers.ModelSerializer):
         model = Vaccination
         fields = '__all__'
 
+    def validate_date(self, value):
+        if value and value > timezone.now().date():
+            raise serializers.ValidationError("Date of vaccination cannot be in the future.")
+        return value
+
 
 class VeterinaryVisitsSerializer(serializers.ModelSerializer):
     class Meta:
         model = VeterinaryVisit
         fields = '__all__'
+
+    def validate_date(self, value):
+        if value and value > timezone.now().date():
+            raise serializers.ValidationError("Date of visit cannot be in the future.")
+        return value
 
 
 class TemporaryHomeSerializer(serializers.ModelSerializer):
@@ -43,7 +52,7 @@ class AdopterSerializer(serializers.ModelSerializer):
 
 
 class HealthCardAllergySerializer(serializers.ModelSerializer):
-    allergy = AllergiesSerializer(read_only=True)
+    allergy = AllergiesSerializer()
 
     class Meta:
         model = HealthCardAllergy
@@ -51,7 +60,7 @@ class HealthCardAllergySerializer(serializers.ModelSerializer):
 
 
 class HealthCardMedicationSerializer(serializers.ModelSerializer):
-    medication = MedicationsSerializer(read_only=True)
+    medication = MedicationsSerializer()
 
     class Meta:
         model = HealthCardMedication
@@ -59,7 +68,7 @@ class HealthCardMedicationSerializer(serializers.ModelSerializer):
 
 
 class HealthCardVaccinationSerializer(serializers.ModelSerializer):
-    vaccination = VaccinationsSerializer(read_only=True)
+    vaccination = VaccinationsSerializer()
 
     class Meta:
         model = HealthCardVaccination
@@ -67,14 +76,16 @@ class HealthCardVaccinationSerializer(serializers.ModelSerializer):
 
 
 class HealthCardSerializer(serializers.ModelSerializer):
-    allergies = HealthCardAllergySerializer(many=True, read_only=True, source='healthcardallergies')
-    medications = HealthCardMedicationSerializer(many=True, read_only=True, source='healthcardmedications')
-    vaccinations = HealthCardVaccinationSerializer(many=True, read_only=True, source='healthcardvaccinations')
-    veterinary_visits = VeterinaryVisitsSerializer(many=True, read_only=True, source='veterinaryvisits')
+    animal = serializers.CharField()
+    allergies = HealthCardAllergySerializer(many=True, source='healthcardallergies', required=False)
+    medications = HealthCardMedicationSerializer(many=True, source='healthcardmedications', required=False)
+    vaccinations = HealthCardVaccinationSerializer(many=True, source='healthcardvaccinations', required=False)
+    veterinary_visits = VeterinaryVisitsSerializer(many=True, source='veterinaryvisits', required=False)
 
     class Meta:
         model = HealthCard
         fields = [
+            'animal',
             'allergies',
             'medications',
             'vaccinations',
@@ -112,13 +123,13 @@ class AnimalSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-
 #  ------------------------------------------------------------
 #  PUBLIC
 #  ------------------------------------------------------------
 
 
 class AnimalPublicSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Animal
         fields = [

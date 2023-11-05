@@ -55,8 +55,7 @@ class VeterinaryVisitView(BaseAdminAbstractView):
     """
     queryset = VeterinaryVisit.objects.all()
     serializer_class = VeterinaryVisitsSerializer
-    search_fields = ["health_card", "doctor", "date"]
-    ordering_fields = ["health_card", "doctor", "date"]
+    lookup_field = "health_card"
 
 
 class TemporaryHomeView(BaseAdminAbstractView):
@@ -96,10 +95,15 @@ class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
     permission_classes = [IsAdminUser,]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
-    lookup_field = "pk"
+    lookup_field = "slug"
 
 
-class HealthCardViewSet(ModelViewSet):
+class HealthCardView(ModelViewSet):
+    """
+    HealthCard CRUD, accepts allergies, vaccinations, medications and veterinaryvisits
+
+    Readonly: created_at, updated_at
+    """
     queryset = HealthCard.objects.all()
     serializer_class = HealthCardSerializer
 
