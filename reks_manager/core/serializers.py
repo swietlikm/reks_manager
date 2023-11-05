@@ -76,7 +76,6 @@ class HealthCardVaccinationSerializer(serializers.ModelSerializer):
 
 
 class HealthCardSerializer(serializers.ModelSerializer):
-    animal = serializers.CharField()
     allergies = HealthCardAllergySerializer(many=True, source='healthcardallergies', required=False)
     medications = HealthCardMedicationSerializer(many=True, source='healthcardmedications', required=False)
     vaccinations = HealthCardVaccinationSerializer(many=True, source='healthcardvaccinations', required=False)
@@ -84,13 +83,27 @@ class HealthCardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HealthCard
-        fields = [
-            'animal',
-            'allergies',
-            'medications',
-            'vaccinations',
-            'veterinary_visits',
-        ]
+        fields = '__all__'
+
+    def create(self, validated_data):
+        # Create HealthCard object
+        allergies_data = validated_data.pop('allergies', [])
+        medications_data = validated_data.pop('medications', [])
+        vaccinations_data = validated_data.pop('vaccinations', [])
+
+        health_card = HealthCard.objects.create(**validated_data)
+
+        # Create related objects and associate them with the HealthCard
+        for allergy_data in allergies_data:
+            HealthCardAllergy.objects.create(health_card=health_card, **allergy_data)
+
+        for medication_data in medications_data:
+            HealthCardMedication.objects.create(health_card=health_card, **medication_data)
+
+        for vaccination_data in vaccinations_data:
+            HealthCardVaccination.objects.create(health_card=health_card, **vaccination_data)
+
+        return health_card
 
 
 class AnimalSerializer(serializers.ModelSerializer):
