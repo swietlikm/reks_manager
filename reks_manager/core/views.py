@@ -1,3 +1,4 @@
+from django.views.generic import ListView
 from rest_framework import filters
 from rest_framework.mixins import ListModelMixin
 from rest_framework.mixins import RetrieveModelMixin
@@ -6,6 +7,12 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, TemporaryHome, Adopter
 from .serializers import AnimalSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
+
+
+class HomeTestView(ListView):
+    template_name = 'pages/home.html'
+    model = Animal
+    context_object_name = 'animals'
 
 
 class BaseAdminAbstractView(ModelViewSet):

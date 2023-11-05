@@ -1,1 +1,30 @@
 {% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        {% for animal in animals %}
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-lg">
+                <img src="{{ animal.image.url }}" class="card-img-top rounded-top" alt="{{ animal.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ animal.name }}</h5>
+                    <p class="card-text">{{ animal.description }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Rasa: {{ animal.animal_type }}</li>
+                    <li class="list-group-item">Płeć {{ animal.gender }}</li>
+                    <li class="list-group-item">
+                        Data urodzenia{{ animal.birth_date }}
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="btn btn-primary btn-sm">Szczegóły</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
