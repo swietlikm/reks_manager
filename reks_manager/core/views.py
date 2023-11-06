@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, TemporaryHome, Adopter
-from .serializers import AnimalSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
+from .serializers import AnimalSerializer, HealthCardSimpleSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
 
 
 class HomeTestView(ListView):
@@ -112,7 +112,8 @@ class HealthCardView(ModelViewSet):
     Readonly: created_at, updated_at
     """
     queryset = HealthCard.objects.all()
-    serializer_class = HealthCardSerializer
+    serializer_class = HealthCardSimpleSerializer
+    lookup_field = "animal"
 
 #  ------------------------------------------------------------
 #  PUBLIC

@@ -185,6 +185,13 @@ class Animal(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     added_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="animals", verbose_name=_("Added by"))
+    adopted_by = models.ForeignKey(
+        Adopter,
+        on_delete=models.CASCADE,
+        related_name='animals',
+        verbose_name=_('Adopted by'),
+        blank=True,
+        null=True)
 
     home = models.ForeignKey(
         TemporaryHome, on_delete=models.CASCADE, related_name="animals", blank=True, null=True, verbose_name=_("Home")
@@ -197,6 +204,16 @@ class Animal(models.Model):
         super().clean()
         if self.date_when_found < self.birth_date:
             raise ValidationError(_("Date when found cannot be before the birth date."))
+
+    def adopt(self, adopter):
+        self.adopted_by = adopter
+        self.status = "ZAADOPTOWANY"
+        self.save()
+
+    def remove_adopter(self):
+        self.adopted_by = None
+        self.status = "DO_ADOPCJI"
+        self.save()
 
     class Meta:
         verbose_name = _("Animal")
