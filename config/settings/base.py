@@ -308,6 +308,9 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "reks_manager.users.api.views.custom_exception_handler",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_RATES": {
+        'user_auth': '3/30minutes',
+    }
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
@@ -321,5 +324,3 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
 }
-# Your stuff...
-# ------------------------------------------------------------------------------
