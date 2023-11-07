@@ -308,9 +308,9 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "reks_manager.users.api.views.custom_exception_handler",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.ScopedRateThrottle',
-    ],
+    # "DEFAULT_THROTTLE_CLASSES": [
+    #     'rest_framework.throttling.ScopedRateThrottle',
+    # ],
     "DEFAULT_THROTTLE_RATES": {
         'user_auth': '3/30minutes',
     }
