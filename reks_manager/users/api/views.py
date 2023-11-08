@@ -37,7 +37,7 @@ def custom_exception_handler(exc, context):
     if response is not None:
         # Check if the response contains 'non_field_errors' and format it as needed
         if 'non_field_errors' in response.data:
-            response.data['message'] = response.data['non_field_errors'][0]
+            response.data['detail'] = response.data['non_field_errors'][0]
             del response.data['non_field_errors']
 
     return response

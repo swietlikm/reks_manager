@@ -6,18 +6,24 @@ from reks_manager.users.api.serializers import UserSerializer
 
 
 class AllergiesSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Allergy
         fields = '__all__'
 
 
 class MedicationsSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Medication
         fields = '__all__'
 
 
 class VaccinationsSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Vaccination
         fields = '__all__'
@@ -29,6 +35,8 @@ class VaccinationsSerializer(serializers.ModelSerializer):
 
 
 class VeterinaryVisitsSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = VeterinaryVisit
         fields = '__all__'
@@ -40,19 +48,23 @@ class VeterinaryVisitsSerializer(serializers.ModelSerializer):
 
 
 class TemporaryHomeSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = TemporaryHome
         fields = '__all__'
 
 
 class AdopterSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Adopter
         fields = '__all__'
 
 
 class HealthCardAllergySerializer(serializers.ModelSerializer):
-    allergy = AllergiesSerializer()
+    allergy = AllergiesSerializer(read_only=True)
 
     class Meta:
         model = HealthCardAllergy
@@ -102,7 +114,7 @@ class HealthCardSimpleSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Date of visit cannot be in the future.")
             return value
 
-    id = serializers.CharField(read_only=True)
+    id = serializers.ReadOnlyField()
     animal = serializers.CharField(read_only=True)
     allergies = SimpleHealthCardAllergySerializer(many=True, source='healthcardallergies', required=False)
     medications = SimpleHealthCardMedicationSerializer(many=True, source='healthcardmedications', required=False)
@@ -183,8 +195,9 @@ class HealthCardSerializer(serializers.ModelSerializer):
 
 
 class AnimalSerializer(serializers.ModelSerializer):
-    added_by = UserSerializer()
-    health_card = HealthCardSerializer(source="healthcards")
+    added_by = UserSerializer(read_only=True)
+    health_card = HealthCardSerializer(source="healthcards", read_only=True)
+    temporary_home = serializers.ReadOnlyField(source='home')
 
     class Meta:
         model = Animal
@@ -202,8 +215,8 @@ class AnimalSerializer(serializers.ModelSerializer):
             "description_of_health",
             "residence",
             "image",
+            "temporary_home",
 
-            "home",
             "added_by",
 
             "health_card",
@@ -211,6 +224,8 @@ class AnimalSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+        read_only_fields = ('id', 'slug', 'health_card', 'created_at', 'updated_at')
+
 
 #  ------------------------------------------------------------
 #  PUBLIC

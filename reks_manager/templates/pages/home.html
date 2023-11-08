@@ -6,7 +6,7 @@
         {% for animal in animals %}
         <div class="col-md-4 mb-4">
             <div class="card border-0 shadow-lg">
-                <img src="{{ animal.image.url }}" class="card-img-top rounded-top" alt="{{ animal.name }}">
+                <img src="{{ animal.image_url }}" class="card-img-top rounded-top" alt="{{ animal.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ animal.name }}</h5>
                     <p class="card-text">{{ animal.description }}</p>

@@ -17,27 +17,32 @@ from django.utils.translation import gettext as _
 
 @admin.register(Adopter)
 class AdopterAdmin(admin.ModelAdmin):
-    list_display = ("owner", "phone_number", "address", "updated_at")
-    list_filter = ("owner", "created_at", "updated_at")
-    search_fields = ("owner",)
+    list_display = ("name", "phone_number", "address", "updated_at")
+    list_filter = ("name", "created_at", "updated_at")
+    search_fields = ("name",)
     readonly_fields = ("id",)
 
 
 @admin.register(Animal)
 class AnimalAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "animal_type",
         "name",
         "status",
         "residence",
-        "added_by",
         "created_at",
         "updated_at",
     )
     list_filter = ("name", "created_at", "updated_at")
     search_fields = ("name",)
-    readonly_fields = ("id",)
-    # exclude = ['user']
+    readonly_fields = ("slug", "id", "added_by")
+
+    def save_model(self, request, obj, form, change):
+        if hasattr(obj, "added_by"):
+            if not obj.added_by:
+                obj.added_by = request.user
+        obj.save()
 
 
 @admin.register(TemporaryHome)
@@ -53,18 +58,6 @@ class TemporaryHomeAdmin(admin.ModelAdmin):
     list_filter = ("owner", "city", "street", "created_at", "updated_at")
     search_fields = ("owner",)
     readonly_fields = ("id",)
-
-
-# @admin.register(HealthCard)
-# class HealthCardAdmin(admin.ModelAdmin):
-#     list_display = (
-#         'animal',
-#         'created_at',
-#         'updated_at',
-#     )
-#     list_filter = ('animal', 'created_at', 'updated_at')
-#     search_fields = ('animal',)
-#     readonly_fields = ('id',)
 
 
 @admin.register(VeterinaryVisit)
@@ -99,6 +92,7 @@ class HealthCardVaccinationInline(admin.StackedInline):
 class HealthCardAdmin(admin.ModelAdmin):
     inlines = [HealthCardVaccinationInline, HealthCardAllergyInline, HealthCardMedicationInline]
     list_display = (
+        "id",
         "animal",
         "allergies_count",
         "medications_count",
@@ -118,7 +112,7 @@ class HealthCardAdmin(admin.ModelAdmin):
         return obj.allergies.count()
 
     allergies_count.short_description = _("Allergies Count")
-    allergies_count.admin_order_field = "allergies__count"
+    allergies_count.admin_order_field = "Allergies__Count"
 
     def medications_count(self, obj):
         return obj.medications.count()

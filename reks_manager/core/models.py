@@ -1,3 +1,4 @@
+from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
@@ -5,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 User = get_user_model()
 
@@ -54,10 +57,11 @@ class Allergy(models.Model):
     class Meta:
         verbose_name = _("Allergy")
         verbose_name_plural = _("Allergies")
+        unique_together = ['category', 'name']
 
 
 class Medication(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Medication name"))
+    name = models.CharField(max_length=255, verbose_name=_("Medication name"), unique=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -71,7 +75,7 @@ class Medication(models.Model):
 
 
 class Vaccination(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Vaccination name"))
+    name = models.CharField(max_length=255, verbose_name=_("Vaccination name"), unique=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
@@ -90,9 +94,11 @@ class Adopter(models.Model):
         length=16,
         max_length=40,
         alphabet="abcdefg1234",
+        unique=True,
+        prefix="a_"
     )
 
-    owner = models.CharField(max_length=255, verbose_name=_("Full name of owner"))
+    name = models.CharField(max_length=255, verbose_name=_("Full name of adopter"))
 
     phone_number = models.CharField(
         max_length=9,
@@ -105,11 +111,12 @@ class Adopter(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return f'{_("Adopter")} {self.owner}'
+        return f'{_("Adopter")} {self.name}'
 
     class Meta:
         verbose_name = _("Adopter")
         verbose_name_plural = _("Adopters")
+        unique_together = ['name', 'phone_number', 'address']
 
 
 class TemporaryHome(models.Model):
@@ -118,6 +125,7 @@ class TemporaryHome(models.Model):
         length=16,
         max_length=40,
         alphabet="abcdefg1234",
+        prefix="th_"
     )
 
     owner = models.CharField(max_length=255, verbose_name=_("Full name of owner"))
@@ -148,14 +156,17 @@ class TemporaryHome(models.Model):
     class Meta:
         verbose_name = _("Temporary home")
         verbose_name_plural = _("Temporary homes")
+        unique_together = ('owner', 'phone_number')
 
 
 class Animal(models.Model):
     id = ShortUUIDField(
         primary_key=True,
-        length=16,
-        max_length=40,
-        alphabet="abcdefg1234",
+        length=6,
+        max_length=8,
+        alphabet="12345",
+        prefix="p_",
+        unique=True
     )
     name = models.CharField(
         max_length=255,
@@ -184,7 +195,14 @@ class Animal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
-    added_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="animals", verbose_name=_("Added by"))
+    added_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="animals",
+        verbose_name=_("Added by"),
+        blank=True, null=True
+    )
+
     adopted_by = models.ForeignKey(
         Adopter,
         on_delete=models.CASCADE,
@@ -200,10 +218,20 @@ class Animal(models.Model):
     def __str__(self):
         return f"{_(self.animal_type)} {self.name}"
 
+    def save(self, *args, **kwargs):
+        if not self.added_by:
+            self.added_by = self.request.user
+        super(Animal, self).save(*args, **kwargs)
+
     def clean(self):
         super().clean()
-        if self.date_when_found < self.birth_date:
-            raise ValidationError(_("Date when found cannot be before the birth date."))
+        if self.birth_date:
+            if self.birth_date > timezone.now().date():
+                raise ValidationError(_('Birth date cannot be in the future'))
+
+        if self.date_when_found is not None:
+            if self.date_when_found < self.birth_date:
+                raise ValidationError(_("Date when found cannot be before the birth date."))
 
     def adopt(self, adopter):
         self.adopted_by = adopter
@@ -215,17 +243,31 @@ class Animal(models.Model):
         self.status = "DO_ADOPCJI"
         self.save()
 
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        return 'https://dummyimage.com/350x250/fff/000'
+
     class Meta:
         verbose_name = _("Animal")
         verbose_name_plural = _("Animals")
 
 
+@receiver(post_save, sender=Animal)
+def create_health_card(sender, instance, created, **kwargs):
+    print('xd')
+    if created:
+        HealthCard.objects.create(animal=instance)
+
+
 class HealthCard(models.Model):
     id = ShortUUIDField(
         primary_key=True,
-        length=16,
-        max_length=40,
-        alphabet="abcdefg1234",
+        length=7,
+        max_length=10,
+        alphabet="12345",
+        prefix="hc_",
+        unique=True
     )
     animal = models.OneToOneField(
         Animal, on_delete=models.CASCADE, related_name="healthcards", verbose_name=_("Animal")

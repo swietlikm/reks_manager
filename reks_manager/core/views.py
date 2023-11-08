@@ -89,13 +89,20 @@ class AdopterView(BaseAdminAbstractView):
     ordering_fields = ["owner", "address"]
 
 
-class AnimalsViewSet(ListModelMixin, GenericViewSet):
+class AnimalsViewSet(ModelViewSet):
     permission_classes = [IsAdminUser,]
     serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["name", "slug", "animal_type", "status"]
     ordering_fields = ["name", "animal_type", "status", "birth_date"]
+    lookup_field = "slug"
+
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            instance = serializer.save(added_by=self.request.user)
+        else:
+            instance = serializer.save()
 
 
 class AnimalViewSet(RetrieveModelMixin, GenericViewSet):

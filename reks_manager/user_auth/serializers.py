@@ -1,14 +1,10 @@
-import secrets
-import string
-
 from allauth.account.adapter import get_adapter
 from allauth.account.forms import default_token_generator
 from allauth.account.models import EmailAddress
-from allauth.account.utils import url_str_to_user_pk as uid_decoder, setup_user_email
+from allauth.account.utils import url_str_to_user_pk as uid_decoder
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm
-from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
