@@ -1,12 +1,12 @@
 from django.views.generic import ListView
 from rest_framework import filters
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import ListModelMixin, UpdateModelMixin
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, TemporaryHome, Adopter
-from .serializers import AnimalSerializer, HealthCardSimpleSerializer, HealthCardSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
+from .serializers import AnimalSerializer, HealthCardWriteSerializer, HealthCardReadSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
 
 
 class HomeTestView(ListView):
@@ -100,9 +100,9 @@ class AnimalsViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-            instance = serializer.save(added_by=self.request.user)
+            serializer.save(added_by=self.request.user)
         else:
-            instance = serializer.save()
+            serializer.save()
 
 
 class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
@@ -112,16 +112,24 @@ class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
     lookup_field = "slug"
 
 
-class HealthCardView(ModelViewSet):
+class HealthCardView(
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    GenericViewSet
+):
     """
     HealthCard CRUD, accepts allergies, vaccinations, medications and veterinaryvisits
 
     Readonly: created_at, updated_at
     """
     queryset = HealthCard.objects.all()
-    serializer_class = HealthCardSimpleSerializer
     lookup_field = "animal"
 
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return HealthCardWriteSerializer
+        return HealthCardReadSerializer
 #  ------------------------------------------------------------
 #  PUBLIC
 #  ------------------------------------------------------------

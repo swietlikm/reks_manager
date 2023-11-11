@@ -5,6 +5,8 @@ from .models import Animal, HealthCard, Allergy, Medication, Vaccination, Veteri
 from reks_manager.users.api.serializers import UserSerializer
 
 
+# SIMPLE #################################
+
 class AllergiesSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
 
@@ -62,6 +64,8 @@ class AdopterSerializer(serializers.ModelSerializer):
         model = Adopter
         fields = '__all__'
 
+# INTERMEDIATE #################################
+
 
 class HealthCardAllergySerializer(serializers.ModelSerializer):
     allergy = AllergiesSerializer(read_only=True)
@@ -87,24 +91,24 @@ class HealthCardVaccinationSerializer(serializers.ModelSerializer):
         fields = ['vaccination', 'vaccination_date', 'description']
 
 
-class HealthCardSimpleSerializer(serializers.ModelSerializer):
-    class SimpleHealthCardAllergySerializer(serializers.ModelSerializer):
+class HealthCardWriteSerializer(serializers.ModelSerializer):
+    class HealthCardAllergyWriteSerializer(serializers.ModelSerializer):
         class Meta:
             model = HealthCardAllergy
             fields = ['allergy', 'description']
 
-    class SimpleHealthCardMedicationSerializer(serializers.ModelSerializer):
+    class HealthCardMedicationWriteSerializer(serializers.ModelSerializer):
 
         class Meta:
             model = HealthCardMedication
             fields = ['medication', 'description']
 
-    class SimpleHealthCardVaccinationSerializer(serializers.ModelSerializer):
+    class HealthCardVaccinationWriteSerializer(serializers.ModelSerializer):
         class Meta:
             model = HealthCardVaccination
             fields = ['vaccination', 'vaccination_date', 'description']
 
-    class SimpleVeterinaryVisitsSerializer(serializers.ModelSerializer):
+    class VeterinaryVisitWriteSerializer(serializers.ModelSerializer):
         class Meta:
             model = VeterinaryVisit
             fields = ('doctor', 'date', 'description')
@@ -116,14 +120,14 @@ class HealthCardSimpleSerializer(serializers.ModelSerializer):
 
     id = serializers.ReadOnlyField()
     animal = serializers.CharField(read_only=True)
-    allergies = SimpleHealthCardAllergySerializer(many=True, source='healthcardallergies', required=False)
-    medications = SimpleHealthCardMedicationSerializer(many=True, source='healthcardmedications', required=False)
-    vaccinations = SimpleHealthCardVaccinationSerializer(many=True, source='healthcardvaccinations', required=False)
-    # veterinaryvisits = SimpleVeterinaryVisitsSerializer(many=True, required=False)
+    allergies = HealthCardAllergyWriteSerializer(many=True, source='healthcardallergies', required=False)
+    medications = HealthCardMedicationWriteSerializer(many=True, source='healthcardmedications', required=False)
+    vaccinations = HealthCardVaccinationWriteSerializer(many=True, source='healthcardvaccinations', required=False)
+    veterinaryvisits = VeterinaryVisitWriteSerializer(many=True, required=False)
 
     class Meta:
         model = HealthCard
-        fields = ('id', 'animal', 'allergies', 'medications', 'vaccinations')#, 'veterinaryvisits')
+        fields = ('id', 'animal', 'allergies', 'medications', 'vaccinations', 'veterinaryvisits')
 
     def update(self, instance, validated_data):
         # # Update HealthCard object
@@ -132,7 +136,7 @@ class HealthCardSimpleSerializer(serializers.ModelSerializer):
         allergies_data = validated_data.get('healthcardallergies', [])
         medications_data = validated_data.get('healthcardmedications', [])
         vaccinations_data = validated_data.get('healthcardvaccinations', [])
-        # veterinaryvisits_data = validated_data.get('veterinaryvisits', [])
+        veterinaryvisits_data = validated_data.get('veterinaryvisits', [])
 
         # Update or create HealthCardAllergy objects
         for allergy_data in allergies_data:
@@ -148,22 +152,30 @@ class HealthCardSimpleSerializer(serializers.ModelSerializer):
 
         # Update or create HealthCardVaccination objects
         for vaccination_data in vaccinations_data:
-            vaccination, created = HealthCardVaccination.objects.get_or_create(health_card=instance, vaccination=vaccination_data['vaccination'])
-            vaccination.vaccination_date = vaccination_data.get('vaccination_date', vaccination.vaccination_date)
+            vaccination, created = HealthCardVaccination.objects.get_or_create(
+                health_card=instance,
+                vaccination=vaccination_data['vaccination'],
+                vaccination_date=vaccination_data['vaccination_date'])
+
             vaccination.description = vaccination_data.get('description', vaccination.description)
             vaccination.save()
 
         # Update or create VeterinaryVisit objects
-        # for veterinaryvisit_data in veterinaryvisits_data:
-        #     doctor = veterinaryvisit_data.get('doctor', veterinaryvisit_data.doctor)
-        #     date = veterinaryvisit_data.get('date', veterinaryvisit_data.date)
-        #     description = veterinaryvisit_data.get('description', veterinaryvisit_data.description)
-        #     veterinaryvisit = VeterinaryVisit(health_card=instance.id, doctor=doctor, date=date, description=description)
-        #     veterinaryvisit.save()
+        for veterinary_visit_data in veterinaryvisits_data:
+            veterinary_visit, created = VeterinaryVisit.objects.get_or_create(
+                health_card=instance,
+                doctor=veterinary_visit_data['doctor'],
+                date=veterinary_visit_data['date'],
+                description=veterinary_visit_data['description']
+            )
+            veterinary_visit.doctor = veterinary_visit_data.get('doctor', veterinary_visit.doctor)
+            veterinary_visit.date = veterinary_visit_data.get('date', veterinary_visit.date)
+            veterinary_visit.description = veterinary_visit_data.get('description', veterinary_visit.description)
+            veterinary_visit.save()
         return instance
 
 
-class HealthCardSerializer(serializers.ModelSerializer):
+class HealthCardReadSerializer(serializers.ModelSerializer):
     allergies = HealthCardAllergySerializer(many=True, source='healthcardallergies', required=False)
     medications = HealthCardMedicationSerializer(many=True, source='healthcardmedications', required=False)
     vaccinations = HealthCardVaccinationSerializer(many=True, source='healthcardvaccinations', required=False)
@@ -173,30 +185,10 @@ class HealthCardSerializer(serializers.ModelSerializer):
         model = HealthCard
         fields = ('animal', 'allergies', 'medications', 'vaccinations', 'veterinary_visits')
 
-    def create(self, validated_data):
-        # Create HealthCard object
-        allergies_data = validated_data.pop('allergies', [])
-        medications_data = validated_data.pop('medications', [])
-        vaccinations_data = validated_data.pop('vaccinations', [])
-
-        health_card = HealthCard.objects.create(**validated_data)
-
-        # Create related objects and associate them with the HealthCard
-        for allergy_data in allergies_data:
-            HealthCardAllergy.objects.create(health_card=health_card, **allergy_data)
-
-        for medication_data in medications_data:
-            HealthCardMedication.objects.create(health_card=health_card, **medication_data)
-
-        for vaccination_data in vaccinations_data:
-            HealthCardVaccination.objects.create(health_card=health_card, **vaccination_data)
-
-        return health_card
-
 
 class AnimalSerializer(serializers.ModelSerializer):
     added_by = UserSerializer(read_only=True)
-    health_card = HealthCardSerializer(source="healthcards", read_only=True)
+    health_card = HealthCardReadSerializer(source="healthcards", read_only=True)
     temporary_home = serializers.ReadOnlyField(source='home')
 
     class Meta:
