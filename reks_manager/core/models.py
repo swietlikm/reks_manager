@@ -1,3 +1,4 @@
+from PIL import Image
 from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from autoslug import AutoSlugField
@@ -178,7 +179,7 @@ class Animal(models.Model):
     animal_type = models.CharField(max_length=255, choices=TYPE_CHOICES, verbose_name=_("Type"))
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, verbose_name=_("Gender"))
 
-    breed = models.CharField(max_length=255, blank=True, choices=GENDER_CHOICES, verbose_name=_("Bread"))
+    breed = models.CharField(max_length=255, blank=True, verbose_name=_("Bread"))
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status"))
@@ -222,6 +223,27 @@ class Animal(models.Model):
     def save(self, *args, **kwargs):
         if not self.added_by:
             self.added_by = self.request.user
+
+        # # IMAGE COMPRESSION
+        # img = Image.open(self.image.url)
+        # # Check if the original width is greater than 1280 pixels
+        # if img.width > 1280:
+        #
+        #     # Set the desired width (adjust as needed)
+        #     new_width = 1280
+        #
+        #     # Calculate the new height to maintain the aspect ratio
+        #     aspect_ratio = img.width / img.height
+        #     new_height = int(new_width / aspect_ratio)
+        #
+        #     # Resize the image while maintaining the aspect ratio
+        #     img = img.resize((new_width, new_height), Image.ANTIALIAS)
+        #
+        #     # Set the desired compression level (adjust as needed)
+        #     compression_quality = 85
+        #
+        #     # Save the resized and compressed image back to the same path
+        #     img.save(self.image.url, quality=compression_quality)
         super(Animal, self).save(*args, **kwargs)
 
     def clean(self):
