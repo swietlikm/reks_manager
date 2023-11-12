@@ -192,7 +192,7 @@ class AnimalReadSerializer(serializers.ModelSerializer):
     added_by = UserSerializer(read_only=True)
     adopted_by = AdopterSerializer(read_only=True)
     health_card = HealthCardReadSerializer(source="healthcards", read_only=True)
-    temporary_home = serializers.ReadOnlyField()
+    temporary_home = TemporaryHomeSerializer(read_only=True)
 
     class Meta:
         model = Animal
@@ -227,12 +227,22 @@ class AnimalWriteSerializer(AnimalReadSerializer):
     adopted_by = serializers.PrimaryKeyRelatedField(queryset=Adopter.objects.all(), required=False)
     temporary_home = serializers.PrimaryKeyRelatedField(queryset=TemporaryHome.objects.all(), required=False)
 
-    # def validate(self, attrs):
-    #     if attrs['adopted_by']:
-    #         adopter = Adopter.objects.filter(id=attrs['adopted_by']).exists()
-    #         if not adopter:
-    #             raise serializers.ValidationError(_("Adopter does not exists"))
-    #     return attrs
+    def validate(self, attrs):
+        if attrs.get('adopted_by') and attrs.get('status'):
+            if attrs.get('status') != "ZAADOPTOWANY":
+                raise serializers.ValidationError(_("If there is an adopter, the status must be set ADOPTED or not included"))
+            else:
+                attrs['status'] = "ADOPTED"
+        return attrs
+
+    def update(self, instance, validated_data):
+        adopted_by = validated_data.get("adopted_by", None)
+
+        if adopted_by is not None:
+            # If adopted_by is provided, update the status to 'ADOPTED'
+            instance.status = "ADOPTED"
+
+        return super().update(instance, validated_data)
 #  ------------------------------------------------------------
 #  PUBLIC
 #  ------------------------------------------------------------
