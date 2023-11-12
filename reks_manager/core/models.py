@@ -178,6 +178,7 @@ class Animal(models.Model):
     animal_type = models.CharField(max_length=255, choices=TYPE_CHOICES, verbose_name=_("Type"))
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, verbose_name=_("Gender"))
 
+    breed = models.CharField(max_length=255, blank=True, choices=GENDER_CHOICES, verbose_name=_("Bread"))
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status"))
@@ -197,7 +198,7 @@ class Animal(models.Model):
 
     added_by = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         related_name="animals",
         verbose_name=_("Added by"),
         blank=True, null=True
@@ -205,14 +206,14 @@ class Animal(models.Model):
 
     adopted_by = models.ForeignKey(
         Adopter,
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         related_name='animals',
         verbose_name=_('Adopted by'),
         blank=True,
         null=True)
 
-    home = models.ForeignKey(
-        TemporaryHome, on_delete=models.CASCADE, related_name="animals", blank=True, null=True, verbose_name=_("Home")
+    temporary_home = models.ForeignKey(
+        TemporaryHome, on_delete=models.DO_NOTHING, related_name="animals", blank=True, null=True, verbose_name=_("Temporary home")
     )
 
     def __str__(self):
@@ -255,7 +256,6 @@ class Animal(models.Model):
 
 @receiver(post_save, sender=Animal)
 def create_health_card(sender, instance, created, **kwargs):
-    print('xd')
     if created:
         HealthCard.objects.create(animal=instance)
 

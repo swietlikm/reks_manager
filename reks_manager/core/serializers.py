@@ -1,8 +1,10 @@
 from django.utils import timezone
+from django.utils.translation import gettext as _
+from reks_manager.users.api.serializers import UserSerializer
 from rest_framework import serializers
 
-from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, HealthCardMedication, HealthCardAllergy, TemporaryHome, Adopter
-from reks_manager.users.api.serializers import UserSerializer
+from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, HealthCardVaccination, \
+    HealthCardMedication, HealthCardAllergy, TemporaryHome, Adopter
 
 
 # SIMPLE #################################
@@ -186,10 +188,11 @@ class HealthCardReadSerializer(serializers.ModelSerializer):
         fields = ('animal', 'allergies', 'medications', 'vaccinations', 'veterinary_visits')
 
 
-class AnimalSerializer(serializers.ModelSerializer):
+class AnimalReadSerializer(serializers.ModelSerializer):
     added_by = UserSerializer(read_only=True)
+    adopted_by = AdopterSerializer(read_only=True)
     health_card = HealthCardReadSerializer(source="healthcards", read_only=True)
-    temporary_home = serializers.ReadOnlyField(source='home')
+    temporary_home = serializers.ReadOnlyField()
 
     class Meta:
         model = Animal
@@ -198,6 +201,7 @@ class AnimalSerializer(serializers.ModelSerializer):
             "name",
             "slug",
             "animal_type",
+            "breed",
             "gender",
             "birth_date",
             "description",
@@ -210,7 +214,7 @@ class AnimalSerializer(serializers.ModelSerializer):
             "temporary_home",
 
             "added_by",
-
+            "adopted_by",
             "health_card",
 
             "created_at",
@@ -219,6 +223,16 @@ class AnimalSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'slug', 'health_card', 'created_at', 'updated_at')
 
 
+class AnimalWriteSerializer(AnimalReadSerializer):
+    adopted_by = serializers.PrimaryKeyRelatedField(queryset=Adopter.objects.all(), required=False)
+    temporary_home = serializers.PrimaryKeyRelatedField(queryset=TemporaryHome.objects.all(), required=False)
+
+    # def validate(self, attrs):
+    #     if attrs['adopted_by']:
+    #         adopter = Adopter.objects.filter(id=attrs['adopted_by']).exists()
+    #         if not adopter:
+    #             raise serializers.ValidationError(_("Adopter does not exists"))
+    #     return attrs
 #  ------------------------------------------------------------
 #  PUBLIC
 #  ------------------------------------------------------------

@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, TemporaryHome, Adopter
-from .serializers import AnimalSerializer, HealthCardWriteSerializer, HealthCardReadSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
+from .serializers import AnimalWriteSerializer, AnimalReadSerializer, HealthCardWriteSerializer, HealthCardReadSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
 
 
 class HomeTestView(ListView):
@@ -91,25 +91,22 @@ class AdopterView(BaseAdminAbstractView):
 
 class AnimalsViewSet(ModelViewSet):
     permission_classes = [IsAdminUser,]
-    serializer_class = AnimalSerializer
     queryset = Animal.objects.all()
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["name", "slug", "animal_type", "status"]
     ordering_fields = ["name", "animal_type", "status", "birth_date"]
     lookup_field = "slug"
 
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return AnimalWriteSerializer
+        return AnimalReadSerializer
+
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
             serializer.save(added_by=self.request.user)
         else:
             serializer.save()
-
-
-class AnimalViewSet(RetrieveModelMixin, GenericViewSet):
-    permission_classes = [IsAdminUser,]
-    serializer_class = AnimalSerializer
-    queryset = Animal.objects.all()
-    lookup_field = "slug"
 
 
 class HealthCardView(
