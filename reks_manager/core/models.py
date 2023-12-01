@@ -31,7 +31,7 @@ TYPE_CHOICES = [
 
 RESIDENCE_CHOICES = [("SCHRONISKO", _("Schronisko")), ("TYMCZASOWY_DOM", _("Tymczasowy dom"))]
 
-""" Gdzie to ma mieć dokładnie zastosowanie? """
+
 ALLERGY_CATEGORY = [
     ("POKARM", _("Pokarm")),
     ("KONTAKT", _("Kontakt")),
@@ -179,7 +179,7 @@ class Animal(models.Model):
     animal_type = models.CharField(max_length=255, choices=TYPE_CHOICES, verbose_name=_("Type"))
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, verbose_name=_("Gender"))
 
-    breed = models.CharField(max_length=255, blank=True, verbose_name=_("Bread"))
+    breed = models.CharField(max_length=255, blank=True, verbose_name=_("Breed"))
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status"))

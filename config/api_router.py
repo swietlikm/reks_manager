@@ -11,7 +11,7 @@ else:
 # router.register("users", UserViewSet)
 router.register("public/animals", AnimalsPublicViewSet)
 router.register("animals", AnimalsViewSet)
-router.register("allergy", AllergyView)
+router.register("allergy", AllergyView, basename='allergy')
 router.register("medication", MedicationView)
 router.register("vaccination", VaccinationView)
 router.register("veterinary-visit", VeterinaryVisitView)

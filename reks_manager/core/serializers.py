@@ -185,13 +185,14 @@ class HealthCardReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HealthCard
-        fields = ('animal', 'allergies', 'medications', 'vaccinations', 'veterinary_visits')
+        fields = ('id', 'animal', 'allergies', 'medications', 'vaccinations', 'veterinary_visits')
 
 
 class AnimalReadSerializer(serializers.ModelSerializer):
     added_by = UserSerializer(read_only=True)
     adopted_by = AdopterSerializer(read_only=True)
     health_card = HealthCardReadSerializer(source="healthcards", read_only=True)
+    health_card_id = serializers.PrimaryKeyRelatedField(source='healthcards', read_only=True)
     temporary_home = TemporaryHomeSerializer(read_only=True)
 
     class Meta:
@@ -216,6 +217,7 @@ class AnimalReadSerializer(serializers.ModelSerializer):
             "added_by",
             "adopted_by",
             "health_card",
+            "health_card_id",
 
             "created_at",
             "updated_at",
@@ -241,6 +243,7 @@ class AnimalWriteSerializer(AnimalReadSerializer):
         if adopted_by is not None:
             # If adopted_by is provided, update the status to 'ADOPTED'
             instance.status = "ADOPTED"
+            instance.temporary_home = None
 
         return super().update(instance, validated_data)
 #  ------------------------------------------------------------

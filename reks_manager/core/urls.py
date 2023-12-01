@@ -1,9 +1,9 @@
 # from django.urls import path
 #
-# from .views import AnimalsViewSet
+# from .views import AllergyView
 #
 # app_name = 'core'
 #
 # urlpatterns = [
-#     path("animals/", view=AnimalsPublicView.as_view(), name="animals"),
+#     path("allergy/", view=AllergyView.as_view(), name="allergy"),
 # ]

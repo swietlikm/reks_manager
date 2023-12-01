@@ -6,7 +6,6 @@ from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-# from rest_framework.authtoken.views import obtain_auth_token
 
 from reks_manager.users.api.views import CustomAuthToken
 from reks_manager.core.views import HomeTestView
@@ -28,7 +27,6 @@ urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     path('auth/', include('reks_manager.user_auth.urls')),
-
     # doc
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(

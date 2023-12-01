@@ -15,6 +15,9 @@ from .forms import AllAuthPasswordResetForm
 
 UserModel = get_user_model()
 
+class EmptySerializer(serializers.Serializer):
+    pass
+
 
 class PasswordResetSerializer(serializers.Serializer):
     """
