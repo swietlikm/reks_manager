@@ -2,10 +2,12 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+
+import environ
+from django.utils.translation import gettext_lazy as _
+
 from .jazzmin import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
 from .rest_auth import REST_AUTH
-import environ
-
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 JAZZMIN_UI_TWEAKS = JAZZMIN_UI_TWEAKS
@@ -33,16 +35,15 @@ TIME_ZONE = "Europe/Warsaw"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "pl"
 # https://docs.djangoproject.com/en/dev/ref/settings/#languages
-from django.utils.translation import gettext_lazy as _
+
 LANGUAGES = [
-    ('en', _('English')),
-    ('pl', _('Polish')),
+    ("en", _("English")),
+    ("pl", _("Polish")),
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
-USE_L10N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
@@ -312,8 +313,8 @@ REST_FRAMEWORK = {
     #     'rest_framework.throttling.ScopedRateThrottle',
     # ],
     "DEFAULT_THROTTLE_RATES": {
-        'user_auth': '3/30minutes',
-    }
+        "user_auth": "3/30minutes",
+    },
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
@@ -352,7 +353,7 @@ AWS_S3_MAX_MEMORY_SIZE = env.int(
     default=100_000_000,  # 100MB
 )
 AWS_DEFAULT_ACL = "public-read"
-AWS_S3_ENDPOINT_URL = f'https://fra1.digitaloceanspaces.com'
+AWS_S3_ENDPOINT_URL = "https://fra1.digitaloceanspaces.com"
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
@@ -360,8 +361,14 @@ AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
 aws_s3_domain = AWS_S3_CUSTOM_DOMAIN
 # STATIC
 # ------------------------
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "reks_manager.utils.storages.MediaS3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # MEDIA
 # ------------------------------------------------------------------------------
-DEFAULT_FILE_STORAGE = "reks_manager.utils.storages.MediaS3Storage"
 MEDIA_URL = f"https://{aws_s3_domain}/media/"

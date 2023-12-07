@@ -1,22 +1,35 @@
 from django.views.generic import ListView
 from rest_framework import filters
-from rest_framework.mixins import ListModelMixin, UpdateModelMixin
-from rest_framework.mixins import RetrieveModelMixin
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from .models import Animal, HealthCard, Allergy, Medication, Vaccination, VeterinaryVisit, TemporaryHome, Adopter
-from .serializers import AnimalWriteSerializer, AnimalReadSerializer, HealthCardWriteSerializer, HealthCardReadSerializer, AllergiesSerializer, MedicationsSerializer, VaccinationsSerializer, AnimalPublicSerializer, VeterinaryVisitsSerializer, TemporaryHomeSerializer, AdopterSerializer
+from .models import Adopter, Allergy, Animal, HealthCard, Medication, TemporaryHome, Vaccination, VeterinaryVisit
+from .serializers import (
+    AdopterSerializer,
+    AllergiesSerializer,
+    AnimalPublicSerializer,
+    AnimalReadSerializer,
+    AnimalWriteSerializer,
+    HealthCardReadSerializer,
+    HealthCardWriteSerializer,
+    MedicationsSerializer,
+    TemporaryHomeSerializer,
+    VaccinationsSerializer,
+    VeterinaryVisitsSerializer,
+)
 
 
 class HomeTestView(ListView):
-    template_name = 'pages/home.html'
+    template_name = "pages/home.html"
     model = Animal
-    context_object_name = 'animals'
+    context_object_name = "animals"
 
 
 class BaseAdminAbstractView(ModelViewSet):
-    permission_classes = [IsAdminUser,]
+    permission_classes = [
+        IsAdminUser,
+    ]
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["id", "name"]
     ordering_fields = ["id", "name"]
@@ -28,6 +41,7 @@ class AllergyView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = Allergy.objects.all()
     serializer_class = AllergiesSerializer
     search_fields = ["name", "category"]
@@ -40,6 +54,7 @@ class MedicationView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = Medication.objects.all()
     serializer_class = MedicationsSerializer
 
@@ -50,6 +65,7 @@ class VaccinationView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = Vaccination.objects.all()
     serializer_class = VaccinationsSerializer
 
@@ -60,6 +76,7 @@ class VeterinaryVisitView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = VeterinaryVisit.objects.all()
     serializer_class = VeterinaryVisitsSerializer
     lookup_field = "health_card"
@@ -71,6 +88,7 @@ class TemporaryHomeView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = TemporaryHome.objects.all()
     serializer_class = TemporaryHomeSerializer
     search_fields = ["owner", "phone_number", "city", "street", "zip_code"]
@@ -83,6 +101,7 @@ class AdopterView(BaseAdminAbstractView):
 
     Readonly: created_at, updated_at
     """
+
     queryset = Adopter.objects.all()
     serializer_class = AdopterSerializer
     search_fields = ["owner", "phone_number", "address"]
@@ -90,7 +109,9 @@ class AdopterView(BaseAdminAbstractView):
 
 
 class AnimalsViewSet(ModelViewSet):
-    permission_classes = [IsAdminUser,]
+    permission_classes = [
+        IsAdminUser,
+    ]
     queryset = Animal.objects.all()
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["name", "slug", "animal_type", "status"]
@@ -109,17 +130,13 @@ class AnimalsViewSet(ModelViewSet):
             serializer.save()
 
 
-class HealthCardView(
-    ListModelMixin,
-    RetrieveModelMixin,
-    UpdateModelMixin,
-    GenericViewSet
-):
+class HealthCardView(ListModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     """
     HealthCard CRUD, accepts allergies, vaccinations, medications and veterinaryvisits
 
     Readonly: created_at, updated_at
     """
+
     queryset = HealthCard.objects.all()
     lookup_field = "animal"
 
@@ -127,6 +144,8 @@ class HealthCardView(
         if self.action in ["create", "update", "partial_update"]:
             return HealthCardWriteSerializer
         return HealthCardReadSerializer
+
+
 #  ------------------------------------------------------------
 #  PUBLIC
 #  ------------------------------------------------------------
@@ -136,11 +155,13 @@ class AnimalsPublicViewSet(ListModelMixin, GenericViewSet):
     """
     PUBLIC ANIMALS SET STATUS = DO_ADOPCJI
     """
+
     authentication_classes = []
-    permission_classes = [AllowAny,]
+    permission_classes = [
+        AllowAny,
+    ]
     serializer_class = AnimalPublicSerializer
     queryset = Animal.objects.filter(status="DO_ADOPCJI")
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["name", "slug", "animal_type", "status"]
     ordering_fields = ["name", "animal_type", "status", "birth_date"]
-

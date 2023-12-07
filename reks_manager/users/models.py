@@ -21,12 +21,12 @@ class User(AbstractUser):
     first_name = CharField(
         _("First name"),
         max_length=255,
-        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))]
+        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))],
     )
     last_name = CharField(
         _("Last name"),
         max_length=255,
-        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))]
+        validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))],
     )
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore

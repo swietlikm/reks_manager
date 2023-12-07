@@ -1,7 +1,17 @@
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from reks_manager.core.views import AnimalsViewSet, AllergyView, MedicationView, VaccinationView, AnimalsPublicViewSet, VeterinaryVisitView, TemporaryHomeView, AdopterView, HealthCardView
+from reks_manager.core.views import (
+    AdopterView,
+    AllergyView,
+    AnimalsPublicViewSet,
+    AnimalsViewSet,
+    HealthCardView,
+    MedicationView,
+    TemporaryHomeView,
+    VaccinationView,
+    VeterinaryVisitView,
+)
 
 if settings.DEBUG:
     router = DefaultRouter()
@@ -11,7 +21,7 @@ else:
 # router.register("users", UserViewSet)
 router.register("public/animals", AnimalsPublicViewSet)
 router.register("animals", AnimalsViewSet)
-router.register("allergy", AllergyView, basename='allergy')
+router.register("allergy", AllergyView, basename="allergy")
 router.register("medication", MedicationView)
 router.register("vaccination", VaccinationView)
 router.register("veterinary-visit", VeterinaryVisitView)

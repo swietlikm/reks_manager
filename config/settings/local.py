@@ -56,6 +56,6 @@ INSTALLED_APPS += ["django_extensions"]  # noqa: F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-DEFAULT_FROM_EMAIL = 'mswbooking@gmail.com'
-SERVER_EMAIL = 'mswbooking@gmail.com'
-EMAIL_HOST_USER = 'mswbooking@gmail.com'
+DEFAULT_FROM_EMAIL = "mswbooking@gmail.com"
+SERVER_EMAIL = "mswbooking@gmail.com"
+EMAIL_HOST_USER = "mswbooking@gmail.com"

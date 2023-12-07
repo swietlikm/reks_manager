@@ -1,14 +1,13 @@
-from PIL import Image
-from django.utils import timezone
-from shortuuid.django_fields import ShortUUIDField
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.utils.translation import gettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+from django.utils.translation import gettext as _
+from shortuuid.django_fields import ShortUUIDField
 
 User = get_user_model()
 
@@ -58,7 +57,7 @@ class Allergy(models.Model):
     class Meta:
         verbose_name = _("Allergy")
         verbose_name_plural = _("Allergies")
-        unique_together = ['category', 'name']
+        unique_together = ["category", "name"]
 
 
 class Medication(models.Model):
@@ -90,14 +89,7 @@ class Vaccination(models.Model):
 
 
 class Adopter(models.Model):
-    id = ShortUUIDField(
-        primary_key=True,
-        length=16,
-        max_length=40,
-        alphabet="abcdefg1234",
-        unique=True,
-        prefix="a_"
-    )
+    id = ShortUUIDField(primary_key=True, length=16, max_length=40, alphabet="abcdefg1234", unique=True, prefix="a_")
 
     name = models.CharField(max_length=255, verbose_name=_("Full name of adopter"))
 
@@ -117,17 +109,11 @@ class Adopter(models.Model):
     class Meta:
         verbose_name = _("Adopter")
         verbose_name_plural = _("Adopters")
-        unique_together = ['name', 'phone_number', 'address']
+        unique_together = ["name", "phone_number", "address"]
 
 
 class TemporaryHome(models.Model):
-    id = ShortUUIDField(
-        primary_key=True,
-        length=16,
-        max_length=40,
-        alphabet="abcdefg1234",
-        prefix="th_"
-    )
+    id = ShortUUIDField(primary_key=True, length=16, max_length=40, alphabet="abcdefg1234", prefix="th_")
 
     owner = models.CharField(max_length=255, verbose_name=_("Full name of owner"))
 
@@ -157,18 +143,11 @@ class TemporaryHome(models.Model):
     class Meta:
         verbose_name = _("Temporary home")
         verbose_name_plural = _("Temporary homes")
-        unique_together = ('owner', 'phone_number')
+        unique_together = ("owner", "phone_number")
 
 
 class Animal(models.Model):
-    id = ShortUUIDField(
-        primary_key=True,
-        length=6,
-        max_length=8,
-        alphabet="12345",
-        prefix="p_",
-        unique=True
-    )
+    id = ShortUUIDField(primary_key=True, length=6, max_length=8, alphabet="12345", prefix="p_", unique=True)
     name = models.CharField(
         max_length=255,
         validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))],
@@ -182,7 +161,9 @@ class Animal(models.Model):
     breed = models.CharField(max_length=255, blank=True, verbose_name=_("Breed"))
     birth_date = models.DateField(verbose_name=_("Birth date"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
-    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status"))
+    status = models.CharField(
+        max_length=255, choices=STATUS_CHOICES, default="NIE_DO_ADOPCJI", verbose_name=_("Status")
+    )
 
     location_where_found = models.CharField(blank=True, max_length=255, verbose_name=_("Location where found"))
     date_when_found = models.DateField(blank=True, null=True, verbose_name=_("Date when found"))
@@ -194,27 +175,40 @@ class Animal(models.Model):
 
     image = models.ImageField(blank=True, null=True, upload_to="animals/", verbose_name=_("Photo"))
 
+    # new in 08.12.2023
+    size = models.CharField(max_length=50, blank=True)
+    chip = models.BooleanField(verbose_name=_("Chip"))
+    neutered = models.BooleanField(verbose_name=_("Neutered"))
+    vaccinated = models.BooleanField(verbose_name=_("Vaccinated"))
+    dewormed = models.BooleanField(verbose_name=_("Dewormed"))
+
+    character = models.CharField(max_length=255, verbose_name=_("Character"))
+    for_who = models.CharField(max_length=255, verbose_name=_("For who"))
+    # end new in
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     added_by = models.ForeignKey(
-        User,
-        on_delete=models.DO_NOTHING,
-        related_name="animals",
-        verbose_name=_("Added by"),
-        blank=True, null=True
+        User, on_delete=models.DO_NOTHING, related_name="animals", verbose_name=_("Added by"), blank=True, null=True
     )
 
     adopted_by = models.ForeignKey(
         Adopter,
         on_delete=models.DO_NOTHING,
-        related_name='animals',
-        verbose_name=_('Adopted by'),
+        related_name="animals",
+        verbose_name=_("Adopted by"),
         blank=True,
-        null=True)
+        null=True,
+    )
 
     temporary_home = models.ForeignKey(
-        TemporaryHome, on_delete=models.DO_NOTHING, related_name="animals", blank=True, null=True, verbose_name=_("Temporary home")
+        TemporaryHome,
+        on_delete=models.DO_NOTHING,
+        related_name="animals",
+        blank=True,
+        null=True,
+        verbose_name=_("Temporary home"),
     )
 
     def __str__(self):
@@ -223,34 +217,13 @@ class Animal(models.Model):
     def save(self, *args, **kwargs):
         if not self.added_by:
             self.added_by = self.request.user
-
-        # # IMAGE COMPRESSION
-        # img = Image.open(self.image.url)
-        # # Check if the original width is greater than 1280 pixels
-        # if img.width > 1280:
-        #
-        #     # Set the desired width (adjust as needed)
-        #     new_width = 1280
-        #
-        #     # Calculate the new height to maintain the aspect ratio
-        #     aspect_ratio = img.width / img.height
-        #     new_height = int(new_width / aspect_ratio)
-        #
-        #     # Resize the image while maintaining the aspect ratio
-        #     img = img.resize((new_width, new_height), Image.ANTIALIAS)
-        #
-        #     # Set the desired compression level (adjust as needed)
-        #     compression_quality = 85
-        #
-        #     # Save the resized and compressed image back to the same path
-        #     img.save(self.image.url, quality=compression_quality)
-        super(Animal, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()
         if self.birth_date:
             if self.birth_date > timezone.now().date():
-                raise ValidationError(_('Birth date cannot be in the future'))
+                raise ValidationError(_("Birth date cannot be in the future"))
 
         if self.date_when_found is not None:
             if self.date_when_found < self.birth_date:
@@ -269,7 +242,7 @@ class Animal(models.Model):
     def image_url(self):
         if self.image:
             return self.image.url
-        return 'https://dummyimage.com/350x250/fff/000'
+        return "https://dummyimage.com/350x250/fff/000"
 
     class Meta:
         verbose_name = _("Animal")
@@ -283,14 +256,7 @@ def create_health_card(sender, instance, created, **kwargs):
 
 
 class HealthCard(models.Model):
-    id = ShortUUIDField(
-        primary_key=True,
-        length=7,
-        max_length=10,
-        alphabet="12345",
-        prefix="hc_",
-        unique=True
-    )
+    id = ShortUUIDField(primary_key=True, length=7, max_length=10, alphabet="12345", prefix="hc_", unique=True)
     animal = models.OneToOneField(
         Animal, on_delete=models.CASCADE, related_name="healthcards", verbose_name=_("Animal")
     )
@@ -331,7 +297,9 @@ class VeterinaryVisit(models.Model):
 
 
 class HealthCardAllergy(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardallergies')
+    health_card = models.ForeignKey(
+        HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name="healthcardallergies"
+    )
     allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, verbose_name=_("Allergy"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -346,7 +314,9 @@ class HealthCardAllergy(models.Model):
 
 
 class HealthCardMedication(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardmedications')
+    health_card = models.ForeignKey(
+        HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name="healthcardmedications"
+    )
     medication = models.ForeignKey(Medication, on_delete=models.CASCADE, verbose_name=_("Medication"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -361,7 +331,9 @@ class HealthCardMedication(models.Model):
 
 
 class HealthCardVaccination(models.Model):
-    health_card = models.ForeignKey(HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name='healthcardvaccinations')
+    health_card = models.ForeignKey(
+        HealthCard, on_delete=models.CASCADE, verbose_name=_("Health card"), related_name="healthcardvaccinations"
+    )
     vaccination = models.ForeignKey(Vaccination, on_delete=models.CASCADE, verbose_name=_("Vaccination"))
     vaccination_date = models.DateField(verbose_name=_("Vaccination date"))
     description = models.TextField(max_length=255, blank=True, verbose_name=_("Description"))

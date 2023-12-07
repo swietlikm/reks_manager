@@ -1,11 +1,12 @@
 import binascii
 import os
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-from django.core.mail import send_mail, EmailMultiAlternatives
 
 EXPIRY_PERIOD = 3  # days
 
@@ -13,7 +14,7 @@ User = get_user_model()
 
 
 def _generate_code():
-    return binascii.hexlify(os.urandom(20)).decode('utf-8')
+    return binascii.hexlify(os.urandom(20)).decode("utf-8")
 
 
 class SignupCodeManager(models.Manager):
@@ -36,9 +37,9 @@ class SignupCodeManager(models.Manager):
 
 
 def send_multi_format_email(template_prefix, template_ctxt, target_email):
-    subject_file = 'email/%s_subject.txt' % template_prefix
-    txt_file = 'email/%s.txt' % template_prefix
-    html_file = 'email/%s.html' % template_prefix
+    subject_file = "email/%s_subject.txt" % template_prefix
+    txt_file = "email/%s.txt" % template_prefix
+    html_file = "email/%s.html" % template_prefix
 
     subject = render_to_string(subject_file).strip()
     from_email = settings.DEFAULT_FROM_EMAIL
@@ -46,27 +47,29 @@ def send_multi_format_email(template_prefix, template_ctxt, target_email):
     # bcc_email = settings.EMAIL_BCC
     text_content = render_to_string(txt_file, template_ctxt)
     html_content = render_to_string(html_file, template_ctxt)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to],)
-    msg.attach_alternative(html_content, 'text/html')
+    msg = EmailMultiAlternatives(
+        subject,
+        text_content,
+        from_email,
+        [to],
+    )
+    msg.attach_alternative(html_content, "text/html")
     msg.send()
 
 
 class SignupCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.CharField(_('code'), max_length=40, primary_key=True)
+    code = models.CharField(_("code"), max_length=40, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = SignupCodeManager()
 
     def send_signup_email(self):
-        prefix = 'signup_email'
+        prefix = "signup_email"
         self.send_email(prefix)
 
     def send_email(self, prefix):
-        ctxt = {
-            'email': self.user.email,
-            'code': self.code
-        }
+        ctxt = {"email": self.user.email, "code": self.code}
         send_multi_format_email(prefix, ctxt, target_email=self.user.email)
 
     def __str__(self):

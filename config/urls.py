@@ -1,14 +1,13 @@
-import allauth
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from reks_manager.users.api.views import CustomAuthToken
 from reks_manager.core.views import HomeTestView
+from reks_manager.users.api.views import CustomAuthToken
 
 urlpatterns = [
     path("", HomeTestView.as_view(), name="home"),
@@ -26,7 +25,7 @@ urlpatterns += [
     path("auth-token/", CustomAuthToken.as_view()),
     # API base url
     path("api/", include("config.api_router")),
-    path('auth/', include('reks_manager.user_auth.urls')),
+    path("auth/", include("reks_manager.user_auth.urls")),
     # doc
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(
