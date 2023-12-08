@@ -177,13 +177,13 @@ class Animal(models.Model):
 
     # new in 08.12.2023
     size = models.CharField(max_length=50, blank=True)
-    chip = models.BooleanField(verbose_name=_("Chip"))
-    neutered = models.BooleanField(verbose_name=_("Neutered"))
-    vaccinated = models.BooleanField(verbose_name=_("Vaccinated"))
-    dewormed = models.BooleanField(verbose_name=_("Dewormed"))
+    chip = models.BooleanField(verbose_name=_("Chip"), default=False)
+    neutered = models.BooleanField(verbose_name=_("Neutered"), default=False)
+    vaccinated = models.BooleanField(verbose_name=_("Vaccinated"), default=False)
+    dewormed = models.BooleanField(verbose_name=_("Dewormed"), default=False)
 
-    character = models.CharField(max_length=255, verbose_name=_("Character"))
-    for_who = models.CharField(max_length=255, verbose_name=_("For who"))
+    character = models.CharField(max_length=255, verbose_name=_("Character"), blank=True)
+    for_who = models.CharField(max_length=255, verbose_name=_("For who"), blank=True)
     # end new in
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
