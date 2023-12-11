@@ -22,7 +22,7 @@ from .serializers import (
 
 class HomeTestView(ListView):
     template_name = "pages/home.html"
-    model = Animal
+    queryset = Animal.objects.filter(status="DO_ADOPCJI")
     context_object_name = "animals"
 
 

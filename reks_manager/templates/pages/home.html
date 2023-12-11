@@ -1,30 +1,42 @@
 {% extends "base.html" %}
+
 {% block content %}
-
-<div class="container mt-5">
+  <style>
+    .image-size {
+      max-height: 450px;
+    }
+  </style>
+  <div class="container mt-5">
     <div class="row">
-        {% for animal in animals %}
+      {% for animal in animals %}
         <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-lg">
-                <img src="{{ animal.image_url }}" class="card-img-top rounded-top" alt="{{ animal.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ animal.name }}</h5>
-                    <p class="card-text">{{ animal.description }}</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Rasa: {{ animal.animal_type }}</li>
-                    <li class="list-group-item">Płeć: {{ animal.gender }}</li>
-                    <li class="list-group-item">
-                        Data urodzenia: {{ animal.birth_date }}
-                    </li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary btn-sm">Szczegóły</a>
-                </div>
+          <div class="card border-0 shadow-lg">
+            <img src="{{ animal.image_url }}"
+                 class="px-2 py-2 card-img-top object-fit-cover image-size rounded"
+                 alt="{{ animal.name }}" />
+            <div class="card-body">
+              <h5 class="card-title">{{ animal.animal_type|title }} {{ animal.name }}</h5>
+              <p class="card-text">{{ animal.description }}</p>
             </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Data urodzenia: {{ animal.birth_date }}</li>
+              <li class="list-group-item">Płeć: {{ animal.gender }}</li>
+              <li class="list-group-item">Rasa: {{ animal.breed }}</li>
+              <li class="list-group-item">
+                Chip:
+                {% if animal.chip %}
+                  <i class="text-success fw-bold bi bi-check-circle"></i>
+                {% else %}
+                  <i class="text-danger fw-bold bi bi-x-circle"></i>
+                {% endif %}
+              </li>
+            </ul>
+            <div class="card-body">
+              <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+            </div>
+          </div>
         </div>
-        {% endfor %}
+      {% endfor %}
     </div>
-</div>
-
+  </div>
 {% endblock content %}

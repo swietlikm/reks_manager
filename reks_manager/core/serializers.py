@@ -234,7 +234,6 @@ class AnimalReadSerializer(serializers.ModelSerializer):
             "adopted_by",
             "health_card",
             "health_card_id",
-
             "size",
             "chip",
             "neutered",
@@ -242,7 +241,6 @@ class AnimalReadSerializer(serializers.ModelSerializer):
             "dewormed",
             "character",
             "for_who",
-
             "created_at",
             "updated_at",
         ]
@@ -292,7 +290,6 @@ class AnimalPublicSerializer(serializers.ModelSerializer):
             "status",
             "description_of_health",
             "residence",
-
             "size",
             "chip",
             "neutered",
@@ -300,7 +297,6 @@ class AnimalPublicSerializer(serializers.ModelSerializer):
             "dewormed",
             "character",
             "for_who",
-
             "image",
             "created_at",
         ]
