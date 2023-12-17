@@ -258,7 +258,7 @@ class AnimalWriteSerializer(AnimalReadSerializer):
                     _("If there is an adopter, the status must be set ADOPTED or not included")
                 )
             else:
-                attrs["status"] = "ADOPTED"
+                attrs["status"] = "ZAADOPTOWANY"
         return attrs
 
     def update(self, instance, validated_data):
@@ -266,7 +266,7 @@ class AnimalWriteSerializer(AnimalReadSerializer):
 
         if adopted_by is not None:
             # If adopted_by is provided, update the status to 'ADOPTED'
-            instance.status = "ADOPTED"
+            instance.status = "ZAADOPTOWANY"
             instance.temporary_home = None
 
         return super().update(instance, validated_data)
