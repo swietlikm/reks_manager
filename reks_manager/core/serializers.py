@@ -284,6 +284,7 @@ class AnimalPublicSerializer(serializers.ModelSerializer):
             "name",
             "slug",
             "animal_type",
+            "breed",
             "gender",
             "birth_date",
             "description",
