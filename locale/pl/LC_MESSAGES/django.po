@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-08 20:50+0100\n"
+"POT-Creation-Date: 2024-01-03 18:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: .\config\settings\base.py:38
+#: .\config\settings\base.py:40
 msgid "English"
 msgstr "Angielski"
 
-#: .\config\settings\base.py:39
+#: .\config\settings\base.py:41
 msgid "Polish"
 msgstr "Polski"
 
@@ -106,287 +106,317 @@ msgstr "Kontakt"
 msgid "Inhalacja"
 msgstr "Inhalacja"
 
-#: .\reks_manager\core\models.py:48
+#: .\reks_manager\core\models.py:47
 msgid "Allergy category"
 msgstr "Kategoria alergii"
 
-#: .\reks_manager\core\models.py:49
+#: .\reks_manager\core\models.py:48
 msgid "Allergy name"
 msgstr "Alergen"
 
-#: .\reks_manager\core\models.py:50 .\reks_manager\core\models.py:65
-#: .\reks_manager\core\models.py:79 .\reks_manager\core\models.py:182
-#: .\reks_manager\core\models.py:314 .\reks_manager\core\models.py:329
-#: .\reks_manager\core\models.py:345
+#: .\reks_manager\core\models.py:49 .\reks_manager\core\models.py:64
+#: .\reks_manager\core\models.py:78 .\reks_manager\core\models.py:166
+#: .\reks_manager\core\models.py:317 .\reks_manager\core\models.py:334
+#: .\reks_manager\core\models.py:352
 msgid "Description"
 msgstr "Opis"
 
-#: .\reks_manager\core\models.py:51 .\reks_manager\core\models.py:66
-#: .\reks_manager\core\models.py:80 .\reks_manager\core\models.py:110
-#: .\reks_manager\core\models.py:195 .\reks_manager\core\models.py:284
-#: .\reks_manager\core\models.py:300
+#: .\reks_manager\core\models.py:50 .\reks_manager\core\models.py:65
+#: .\reks_manager\core\models.py:79 .\reks_manager\core\models.py:102
+#: .\reks_manager\core\models.py:192 .\reks_manager\core\models.py:285
+#: .\reks_manager\core\models.py:301
 msgid "Created at"
 msgstr "Utworzono"
 
-#: .\reks_manager\core\models.py:52 .\reks_manager\core\models.py:67
-#: .\reks_manager\core\models.py:81 .\reks_manager\core\models.py:111
-#: .\reks_manager\core\models.py:196 .\reks_manager\core\models.py:285
-#: .\reks_manager\core\models.py:301
+#: .\reks_manager\core\models.py:51 .\reks_manager\core\models.py:66
+#: .\reks_manager\core\models.py:80 .\reks_manager\core\models.py:103
+#: .\reks_manager\core\models.py:193 .\reks_manager\core\models.py:286
+#: .\reks_manager\core\models.py:302
 msgid "Updated at"
 msgstr "Zaktualizowano"
 
-#: .\reks_manager\core\models.py:55 .\reks_manager\core\models.py:58
-#: .\reks_manager\core\models.py:313
+#: .\reks_manager\core\models.py:54 .\reks_manager\core\models.py:57
+#: .\reks_manager\core\models.py:316 .\reks_manager\core\tests.py:40
 msgid "Allergy"
 msgstr "Alergia"
 
-#: .\reks_manager\core\models.py:59 .\reks_manager\core\models.py:276
+#: .\reks_manager\core\models.py:58 .\reks_manager\core\models.py:277
 msgid "Allergies"
 msgstr "Alergie"
 
-#: .\reks_manager\core\models.py:64
+#: .\reks_manager\core\models.py:63
 #, fuzzy
 #| msgid "Creation date"
 msgid "Medication name"
 msgstr "Nazwa leku"
 
-#: .\reks_manager\core\models.py:70 .\reks_manager\core\models.py:73
-#: .\reks_manager\core\models.py:328
+#: .\reks_manager\core\models.py:69 .\reks_manager\core\models.py:72
+#: .\reks_manager\core\models.py:333
 msgid "Medication"
 msgstr "Lek"
 
-#: .\reks_manager\core\models.py:74 .\reks_manager\core\models.py:278
+#: .\reks_manager\core\models.py:73 .\reks_manager\core\models.py:279
 msgid "Medications"
 msgstr "Leki"
 
-#: .\reks_manager\core\models.py:78
+#: .\reks_manager\core\models.py:77
 msgid "Vaccination name"
 msgstr "Nazwa szczepionki"
 
-#: .\reks_manager\core\models.py:84 .\reks_manager\core\models.py:87
-#: .\reks_manager\core\models.py:343
+#: .\reks_manager\core\models.py:83 .\reks_manager\core\models.py:86
+#: .\reks_manager\core\models.py:350
 msgid "Vaccination"
 msgstr "Szczepionka"
 
-#: .\reks_manager\core\models.py:88 .\reks_manager\core\models.py:281
+#: .\reks_manager\core\models.py:87 .\reks_manager\core\models.py:282
 msgid "Vaccinations"
 msgstr "Szczepionki"
 
-#: .\reks_manager\core\models.py:101
+#: .\reks_manager\core\models.py:93
 #, fuzzy
 #| msgid "Full name of owner"
 msgid "Full name of adopter"
 msgstr "Imie i nazwisko właściciela"
 
-#: .\reks_manager\core\models.py:105 .\reks_manager\core\models.py:135
+#: .\reks_manager\core\models.py:97 .\reks_manager\core\models.py:121
 msgid "Phone number must have 9 digits."
 msgstr "Numer telefonu musi się składać z 9 cyfr"
 
-#: .\reks_manager\core\models.py:106 .\reks_manager\core\models.py:136
+#: .\reks_manager\core\models.py:98 .\reks_manager\core\models.py:122
 msgid "Phone number"
 msgstr "Numer telefonu"
 
-#: .\reks_manager\core\models.py:108
+#: .\reks_manager\core\models.py:100
 msgid "Address"
 msgstr "Adres"
 
-#: .\reks_manager\core\models.py:117
+#: .\reks_manager\core\models.py:109
 msgid "Adopter"
 msgstr "Adoptujący"
 
-#: .\reks_manager\core\models.py:118
+#: .\reks_manager\core\models.py:110
 msgid "Adopters"
 msgstr "Adoptujący"
 
-#: .\reks_manager\core\models.py:131
+#: .\reks_manager\core\models.py:117
 msgid "Full name of owner"
 msgstr "Imie i nazwisko właściciela"
 
-#: .\reks_manager\core\models.py:139
+#: .\reks_manager\core\models.py:125
 msgid "City"
 msgstr "Miasto"
 
-#: .\reks_manager\core\models.py:140
+#: .\reks_manager\core\models.py:126
 msgid "Street"
 msgstr "Ulica"
 
-#: .\reks_manager\core\models.py:141
+#: .\reks_manager\core\models.py:127
 msgid "Building number"
 msgstr "Numer budynku"
 
-#: .\reks_manager\core\models.py:142
+#: .\reks_manager\core\models.py:128
 msgid "Apartment number"
 msgstr "Numer mieszkania"
 
-#: .\reks_manager\core\models.py:146
+#: .\reks_manager\core\models.py:132
 msgid "Zip code must have 5 digits."
 msgstr "Kod pocztowy musi mieć 5 znaków"
 
-#: .\reks_manager\core\models.py:147
+#: .\reks_manager\core\models.py:133
 msgid "Zip code"
 msgstr "Kod pocztowy"
 
-#: .\reks_manager\core\models.py:150
+#: .\reks_manager\core\models.py:136
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: .\reks_manager\core\models.py:151
+#: .\reks_manager\core\models.py:137
 msgid "Update date"
 msgstr "Data aktualizacji"
 
-#: .\reks_manager\core\models.py:157
+#: .\reks_manager\core\models.py:143 .\reks_manager\core\models.py:214
 msgid "Temporary home"
 msgstr "Dom tymczasowy"
 
-#: .\reks_manager\core\models.py:158
+#: .\reks_manager\core\models.py:144
 msgid "Temporary homes"
 msgstr "Domy tymczasowe"
 
-#: .\reks_manager\core\models.py:173 .\reks_manager\users\models.py:24
+#: .\reks_manager\core\models.py:152 .\reks_manager\users\models.py:24
 #: .\reks_manager\users\models.py:29
 msgid "Name must be at least 2 characters long."
 msgstr "Imie musi się składać z minimum 2 znaków"
 
-#: .\reks_manager\core\models.py:174
+#: .\reks_manager\core\models.py:153
 msgid "Name"
 msgstr "Imię"
 
-#: .\reks_manager\core\models.py:178
+#: .\reks_manager\core\models.py:161
 msgid "Type"
 msgstr "Typ"
 
-#: .\reks_manager\core\models.py:179
+#: .\reks_manager\core\models.py:162
 msgid "Gender"
 msgstr "Płeć"
 
-#: .\reks_manager\core\models.py:181
+#: .\reks_manager\core\models.py:164
+msgid "Breed"
+msgstr "Rasa"
+
+#: .\reks_manager\core\models.py:165
 msgid "Birth date"
 msgstr "Data urodzenia"
 
-#: .\reks_manager\core\models.py:183
+#: .\reks_manager\core\models.py:168
 msgid "Status"
 msgstr "Status"
 
-#: .\reks_manager\core\models.py:185
+#: .\reks_manager\core\models.py:171
 msgid "Location where found"
 msgstr "Miejsce znalezienia"
 
-#: .\reks_manager\core\models.py:186
+#: .\reks_manager\core\models.py:172
 msgid "Date when found"
 msgstr "Data znalezienia"
 
-#: .\reks_manager\core\models.py:189
+#: .\reks_manager\core\models.py:175
 msgid "Residence"
 msgstr "Miejsce przebywania"
 
-#: .\reks_manager\core\models.py:191
+#: .\reks_manager\core\models.py:177
 msgid "Health description"
 msgstr "Opis zdrowia"
 
-#: .\reks_manager\core\models.py:193
+#: .\reks_manager\core\models.py:179
 msgid "Photo"
 msgstr "Zdjęcie"
 
-#: .\reks_manager\core\models.py:202
+#: .\reks_manager\core\models.py:183
+msgid "Chip"
+msgstr "Czip"
+
+#: .\reks_manager\core\models.py:184
+msgid "Neutered"
+msgstr "Wykastrowany"
+
+#: .\reks_manager\core\models.py:185
+#, fuzzy
+#| msgid "Vaccination"
+msgid "Vaccinated"
+msgstr "Szczepionka"
+
+#: .\reks_manager\core\models.py:186
+msgid "Dewormed"
+msgstr "Odrobaczony"
+
+#: .\reks_manager\core\models.py:188
+msgid "Character"
+msgstr "Charakter"
+
+#: .\reks_manager\core\models.py:189
+msgid "For who"
+msgstr "Dla kogo"
+
+#: .\reks_manager\core\models.py:196
 msgid "Added by"
 msgstr "Dodany przez"
 
-#: .\reks_manager\core\models.py:210
+#: .\reks_manager\core\models.py:203
 #, fuzzy
 #| msgid "Adopter"
 msgid "Adopted by"
 msgstr "Adoptujący"
 
-#: .\reks_manager\core\models.py:215
-msgid "Home"
-msgstr "Dom"
-
-#: .\reks_manager\core\models.py:230
+#: .\reks_manager\core\models.py:229
 msgid "Birth date cannot be in the future"
 msgstr "Data urodzenia nie może być w przyszłości"
 
-#: .\reks_manager\core\models.py:234
+#: .\reks_manager\core\models.py:233
 msgid "Date when found cannot be before the birth date."
 msgstr "Data znalezienia nie może być przed datą urodzenia"
 
-#: .\reks_manager\core\models.py:252 .\reks_manager\core\models.py:273
+#: .\reks_manager\core\models.py:261 .\reks_manager\core\models.py:274
 msgid "Animal"
 msgstr "Zwierze"
 
-#: .\reks_manager\core\models.py:253
+#: .\reks_manager\core\models.py:262
 msgid "Animals"
 msgstr "Zwierzęta"
 
-#: .\reks_manager\core\models.py:291 .\reks_manager\core\models.py:312
-#: .\reks_manager\core\models.py:327 .\reks_manager\core\models.py:342
+#: .\reks_manager\core\models.py:292 .\reks_manager\core\models.py:314
+#: .\reks_manager\core\models.py:331 .\reks_manager\core\models.py:348
 msgid "Health card"
 msgstr "Karta zdrowia"
 
-#: .\reks_manager\core\models.py:292
+#: .\reks_manager\core\models.py:293
 msgid "Health cards"
 msgstr "Karty zdrowia"
 
-#: .\reks_manager\core\models.py:297
+#: .\reks_manager\core\models.py:298
 msgid "Doctor"
 msgstr "Lekarz"
 
-#: .\reks_manager\core\models.py:298
+#: .\reks_manager\core\models.py:299
 msgid "Date of visit"
 msgstr "Data wizyty"
 
-#: .\reks_manager\core\models.py:299
+#: .\reks_manager\core\models.py:300
 msgid "Visit description"
 msgstr "Opis wizyty"
 
-#: .\reks_manager\core\models.py:307
+#: .\reks_manager\core\models.py:308
 msgid "Veterinary visit"
 msgstr "Wizyta weterynaryjna"
 
-#: .\reks_manager\core\models.py:308
+#: .\reks_manager\core\models.py:309
 msgid "Veterinary visits"
 msgstr "Wizyty weterynaryjne"
 
-#: .\reks_manager\core\models.py:322
+#: .\reks_manager\core\models.py:325
 #, fuzzy
 #| msgid "Health card"
 msgid "Health card - Allergy"
 msgstr "Karta zdrowia - Alergia"
 
-#: .\reks_manager\core\models.py:323
+#: .\reks_manager\core\models.py:326
 #, fuzzy
 #| msgid "Health cards"
 msgid "Health card - Allergies"
 msgstr "Karta zdrowia - Alergie"
 
-#: .\reks_manager\core\models.py:337
+#: .\reks_manager\core\models.py:342
 #, fuzzy
 #| msgid "Health description"
 msgid "Health card - Medication"
 msgstr "Karta zdrowia - Lek"
 
-#: .\reks_manager\core\models.py:338
+#: .\reks_manager\core\models.py:343
 #, fuzzy
 #| msgid "Health description"
 msgid "Health card - Medications"
 msgstr "Karta zdrowia - Leki"
 
-#: .\reks_manager\core\models.py:344
+#: .\reks_manager\core\models.py:351
 #, fuzzy
 #| msgid "Creation date"
 msgid "Vaccination date"
 msgstr "Data szczepienia"
 
-#: .\reks_manager\core\models.py:353
+#: .\reks_manager\core\models.py:360
 #, fuzzy
 #| msgid "Health description"
 msgid "Health card - Vaccination"
 msgstr "Karta zdrowia - Szczepienie"
 
-#: .\reks_manager\core\models.py:354
+#: .\reks_manager\core\models.py:361
 #, fuzzy
 #| msgid "Health description"
 msgid "Health card - Vaccinations"
 msgstr "Karta zdrowia - Szczepienia"
+
+#: .\reks_manager\core\serializers.py:258
+msgid "If there is an adopter, the status must be set ADOPTED or not included"
+msgstr ""
 
 #: .\reks_manager\templates\account\account_inactive.html:6
 #: .\reks_manager\templates\account\account_inactive.html:9
@@ -481,7 +511,7 @@ msgstr ""
 #: .\reks_manager\templates\account\login.html:8
 #: .\reks_manager\templates\account\login.html:11
 #: .\reks_manager\templates\account\login.html:50
-#: .\reks_manager\templates\base.html:82
+#: .\reks_manager\templates\base.html:80
 msgid "Sign In"
 msgstr "Logowanie"
 
@@ -516,7 +546,7 @@ msgstr "Zapomniałeś hasło?"
 #: .\reks_manager\templates\account\logout.html:6
 #: .\reks_manager\templates\account\logout.html:9
 #: .\reks_manager\templates\account\logout.html:18
-#: .\reks_manager\templates\base.html:71
+#: .\reks_manager\templates\base.html:69
 msgid "Sign Out"
 msgstr "Wyloguj"
 
@@ -594,7 +624,7 @@ msgstr "Rejestracja"
 
 #: .\reks_manager\templates\account\signup.html:10
 #: .\reks_manager\templates\account\signup.html:25
-#: .\reks_manager\templates\base.html:77
+#: .\reks_manager\templates\base.html:75
 msgid "Sign Up"
 msgstr "Rejestracja"
 
@@ -648,11 +678,11 @@ msgid ""
 "mail address</a>."
 msgstr ""
 
-#: .\reks_manager\templates\base.html:63
+#: .\reks_manager\templates\base.html:61
 msgid "Admin"
 msgstr "Admin"
 
-#: .\reks_manager\templates\base.html:66
+#: .\reks_manager\templates\base.html:64
 msgid "Api-docs"
 msgstr ""
 
@@ -662,70 +692,70 @@ msgstr ""
 msgid "User-Auth"
 msgstr "Użytkownik"
 
-#: .\reks_manager\user_auth\models.py:56
+#: .\reks_manager\user_auth\models.py:62
 #, fuzzy
 #| msgid "Zip code"
 msgid "code"
 msgstr "Kod pocztowy"
 
-#: .\reks_manager\user_auth\serializers.py:81
-#: .\reks_manager\user_auth\serializers.py:84
+#: .\reks_manager\user_auth\serializers.py:87
+#: .\reks_manager\user_auth\serializers.py:90
 msgid "Invalid value"
 msgstr "Niepoprawna wartość"
 
-#: .\reks_manager\user_auth\serializers.py:136
+#: .\reks_manager\user_auth\serializers.py:144
 msgid "Your old password was entered incorrectly. Please enter it again."
 msgstr "Stare hasło jest nieprawidłowe"
 
-#: .\reks_manager\user_auth\serializers.py:189
+#: .\reks_manager\user_auth\serializers.py:200
 msgid "A user is already registered with this e-mail address."
-msgstr ""
+msgstr "Użytkownik z tym adresem e-mail już istnieje"
 
-#: .\reks_manager\user_auth\serializers.py:213
+#: .\reks_manager\user_auth\serializers.py:225
 msgid "Invalid registration code"
 msgstr "Niepoprawny kod rejestracyjny"
 
-#: .\reks_manager\user_auth\serializers.py:220
+#: .\reks_manager\user_auth\serializers.py:232
 msgid "The two password fields didn't match."
 msgstr "Hasła nie są jednakowe"
 
-#: .\reks_manager\user_auth\views.py:60
+#: .\reks_manager\user_auth\views.py:66
 msgid "Successfully logged out."
 msgstr "Wylogowano"
 
-#: .\reks_manager\user_auth\views.py:89
+#: .\reks_manager\user_auth\views.py:96
 msgid "Password reset e-mail has been sent."
 msgstr "E-mail resetujący hasło został wysłany"
 
-#: .\reks_manager\user_auth\views.py:119
+#: .\reks_manager\user_auth\views.py:127
 msgid "Password changed successfully"
 msgstr "Hasło zostało zmienione"
 
-#: .\reks_manager\user_auth\views.py:145
+#: .\reks_manager\user_auth\views.py:154
 msgid "New password has been saved."
 msgstr "Hasło zostało zmienione"
 
-#: .\reks_manager\user_auth\views.py:190
+#: .\reks_manager\user_auth\views.py:200
 msgid "Email address already taken."
 msgstr "Konto z takim adresem e-mail już istnieje"
 
-#: .\reks_manager\user_auth\views.py:247
+#: .\reks_manager\user_auth\views.py:257
 msgid "Registriation success."
 msgstr "Rejestracja przebiegła pomyślnie"
 
-#: .\reks_manager\user_auth\views.py:250
+#: .\reks_manager\user_auth\views.py:260
 msgid "Unable to finish registration."
 msgstr "Nie można ukończyć rejestracji"
 
-#: .\reks_manager\users\admin.py:23
+#: .\reks_manager\users\admin.py:24
 msgid "Personal info"
 msgstr "Informacje osobiste"
 
-#: .\reks_manager\users\admin.py:25
+#: .\reks_manager\users\admin.py:33
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: .\reks_manager\users\admin.py:36
+#: .\reks_manager\users\admin.py:44
 msgid "Important dates"
 msgstr "Ważne daty"
 
@@ -737,11 +767,11 @@ msgstr "Użytkownicy"
 msgid "This email has already been taken."
 msgstr "Konto z tym adresem e-mail już istnieje"
 
-#: .\reks_manager\users\forms.py:38 .\reks_manager\users\models.py:22
+#: .\reks_manager\users\forms.py:39 .\reks_manager\users\models.py:22
 msgid "First name"
 msgstr "Imię"
 
-#: .\reks_manager\users\forms.py:39 .\reks_manager\users\models.py:27
+#: .\reks_manager\users\forms.py:40 .\reks_manager\users\models.py:27
 msgid "Last name"
 msgstr "Nazwisko"
 
@@ -760,3 +790,6 @@ msgstr "adres email"
 #: .\reks_manager\users\tests\test_views.py:67 .\reks_manager\users\views.py:23
 msgid "Information successfully updated"
 msgstr "Informacje zostały zaktualizowane"
+
+#~ msgid "Home"
+#~ msgstr "Dom"

@@ -153,7 +153,11 @@ class Animal(models.Model):
         validators=[MinLengthValidator(limit_value=2, message=_("Name must be at least 2 characters long."))],
         verbose_name=_("Name"),
     )
-    slug = AutoSlugField(populate_from="name", unique=True, auto_created=True, always_update=True)
+    slug = AutoSlugField(
+        populate_from="get_name_without_polish_letters",
+        unique=True,
+        always_update=True,
+    )
 
     animal_type = models.CharField(max_length=255, choices=TYPE_CHOICES, verbose_name=_("Type"))
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, verbose_name=_("Gender"))
@@ -243,6 +247,32 @@ class Animal(models.Model):
         if self.image:
             return self.image.url
         return "https://dummyimage.com/350x250/fff/000"
+
+    def get_name_without_polish_letters(self):
+        name = self.name
+        replacements = {
+            "ą": "a",
+            "ć": "c",
+            "ę": "e",
+            "ł": "l",
+            "ń": "n",
+            "ó": "o",
+            "ś": "s",
+            "ź": "z",
+            "ż": "z",
+            "Ą": "A",
+            "Ć": "C",
+            "Ę": "E",
+            "Ł": "L",
+            "Ń": "N",
+            "Ó": "O",
+            "Ś": "S",
+            "Ź": "Z",
+            "Ż": "Z",
+        }
+        for k, v in replacements.items():
+            name = name.replace(k, v)
+        return name
 
     class Meta:
         verbose_name = _("Animal")
