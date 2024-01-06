@@ -11,6 +11,7 @@ from reks_manager.core.views import (
     TemporaryHomeView,
     VaccinationView,
     VeterinaryVisitView,
+    AnimalPublicView,
 )
 
 if settings.DEBUG:
@@ -20,6 +21,7 @@ else:
 
 # router.register("users", UserViewSet)
 router.register("public/animals", AnimalsPublicViewSet)
+router.register("public/animal", AnimalPublicView)
 router.register("animals", AnimalsViewSet)
 router.register("allergy", AllergyView, basename="allergy")
 router.register("medication", MedicationView)

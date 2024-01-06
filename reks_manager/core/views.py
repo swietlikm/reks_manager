@@ -165,3 +165,19 @@ class AnimalsPublicViewSet(ListModelMixin, GenericViewSet):
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     search_fields = ["name", "slug", "animal_type", "status"]
     ordering_fields = ["name", "animal_type", "status", "birth_date"]
+
+class AnimalPublicView(RetrieveModelMixin, GenericViewSet):
+    """
+    PUBLIC ANIMAL DATA, STATUS = DO_ADOPCJI
+    """
+
+    authentication_classes = []
+    permission_classes = [
+        AllowAny,
+    ]
+    serializer_class = AnimalPublicSerializer
+    queryset = Animal.objects.filter(status="DO_ADOPCJI")
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ["name", "slug", "animal_type", "status"]
+    ordering_fields = ["name", "animal_type", "status", "birth_date"]
+    lookup_field = "slug"
