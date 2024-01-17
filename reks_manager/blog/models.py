@@ -17,6 +17,7 @@ class Category(models.Model):
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
 
+
 class Post(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.DO_NOTHING, related_name="categories", verbose_name=_("Category")
