@@ -166,6 +166,7 @@ class AnimalsPublicViewSet(ListModelMixin, GenericViewSet):
     search_fields = ["name", "slug", "animal_type", "status"]
     ordering_fields = ["name", "animal_type", "status", "birth_date"]
 
+
 class AnimalPublicView(RetrieveModelMixin, GenericViewSet):
     """
     PUBLIC ANIMAL DATA, STATUS = DO_ADOPCJI

@@ -83,6 +83,7 @@ DJANGO_APPS = [
     "jazzmin",
     "django.contrib.admin",
     "django.forms",
+    "ckeditor",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -102,6 +103,7 @@ LOCAL_APPS = [
     "reks_manager.users",
     "reks_manager.user_auth",
     "reks_manager.core",
+    "reks_manager.blog",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -372,3 +374,11 @@ STORAGES = {
 # MEDIA
 # ------------------------------------------------------------------------------
 MEDIA_URL = f"https://{aws_s3_domain}/media/"
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "height": 300,
+        "width": 800,
+    },
+}

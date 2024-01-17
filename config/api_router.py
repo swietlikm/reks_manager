@@ -1,9 +1,11 @@
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
+from reks_manager.blog.views import CategoryViewSet, PostViewSet
 from reks_manager.core.views import (
     AdopterView,
     AllergyView,
+    AnimalPublicView,
     AnimalsPublicViewSet,
     AnimalsViewSet,
     HealthCardView,
@@ -11,7 +13,6 @@ from reks_manager.core.views import (
     TemporaryHomeView,
     VaccinationView,
     VeterinaryVisitView,
-    AnimalPublicView,
 )
 
 if settings.DEBUG:
@@ -30,6 +31,9 @@ router.register("veterinary-visit", VeterinaryVisitView)
 router.register("temporary-home", TemporaryHomeView)
 router.register("adopter", AdopterView)
 router.register("health-card", HealthCardView)
+
+router.register("blog/category", CategoryViewSet)
+router.register("blog/post", PostViewSet)
 
 
 app_name = "api"
