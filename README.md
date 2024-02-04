@@ -1,4 +1,4 @@
-# Reks Manager
+# Reks Manager (REST API for animal shelter management)
 
 Reks Manager is a powerful Django-based application tailored for effective animal shelter management. This system provides a comprehensive set of features designed to streamline the processes involved in running an animal shelter and facilitating seamless adoptions.
 
