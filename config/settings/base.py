@@ -7,11 +7,9 @@ import environ
 from django.utils.translation import gettext_lazy as _
 
 from .jazzmin import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
-from .rest_auth import REST_AUTH
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 JAZZMIN_UI_TWEAKS = JAZZMIN_UI_TWEAKS
-REST_AUTH = REST_AUTH
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # reks_manager/
@@ -93,8 +91,6 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "rest_framework",
     "rest_framework.authtoken",
-    # "dj_rest_auth",
-    # 'dj_rest_auth.registration',
     "corsheaders",
     "drf_spectacular",
 ]
@@ -122,6 +118,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
