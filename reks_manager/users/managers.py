@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import UserManager as DjangoUserManager
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(DjangoUserManager):

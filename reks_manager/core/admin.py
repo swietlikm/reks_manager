@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext as _
 
-from reks_manager.core.models import (
+from .models import (
     Adopter,
     Allergy,
     Animal,
