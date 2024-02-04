@@ -1,18 +1,19 @@
 from django.contrib import admin
+from django.utils.translation import gettext as _
+
 from reks_manager.core.models import (
     Adopter,
+    Allergy,
     Animal,
-    TemporaryHome,
     HealthCard,
-    VeterinaryVisit,
     HealthCardAllergy,
     HealthCardMedication,
     HealthCardVaccination,
-    Allergy,
     Medication,
+    TemporaryHome,
     Vaccination,
+    VeterinaryVisit,
 )
-from django.utils.translation import gettext as _
 
 
 @admin.register(Adopter)
@@ -108,23 +109,26 @@ class HealthCardAdmin(admin.ModelAdmin):
         "updated_at",
     )
 
+    @admin.display(
+        description=_("Allergies Count"),
+        ordering="Allergies__Count",
+    )
     def allergies_count(self, obj):
         return obj.allergies.count()
 
-    allergies_count.short_description = _("Allergies Count")
-    allergies_count.admin_order_field = "Allergies__Count"
-
+    @admin.display(
+        description=_("Medications Count"),
+        ordering="medications__count",
+    )
     def medications_count(self, obj):
         return obj.medications.count()
 
-    medications_count.short_description = _("Medications Count")
-    medications_count.admin_order_field = "medications__count"
-
+    @admin.display(
+        description=_("Vaccinations Count"),
+        ordering="vaccinations__count",
+    )
     def vaccinations_count(self, obj):
         return obj.vaccinations.count()
-
-    vaccinations_count.short_description = _("Vaccinations Count")
-    vaccinations_count.admin_order_field = "vaccinations__count"
 
 
 @admin.register(Allergy)
