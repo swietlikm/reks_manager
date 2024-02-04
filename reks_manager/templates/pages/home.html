@@ -11,9 +11,9 @@
       {% for animal in animals %}
         <div class="col-md-4 mb-4">
           <div class="card border-0 shadow-lg">
-            <img src="{{ animal.image_url }}"
+            <img alt="{{ animal.name }}"
                  class="px-2 py-2 card-img-top object-fit-cover image-size rounded"
-                 alt="{{ animal.name }}" />
+                 src="{{ animal.image_url }}" />
             <div class="card-body">
               <h5 class="card-title">{{ animal.animal_type|title }} {{ animal.name }}</h5>
               <p class="card-text">{{ animal.description }}</p>
@@ -32,7 +32,7 @@
               </li>
             </ul>
             <div class="card-body">
-              <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+              <a class="btn btn-primary btn-sm" href="#">Więcej</a>
             </div>
           </div>
         </div>
